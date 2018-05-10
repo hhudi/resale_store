@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}编辑商品{% endblock title %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/css/edit_item.css">
+<style>
+    .edit_container{
+        margin-top: 60px;
+    }
+</style>
+{% endblock css %}
+
+{% block body %}
+<div class="edit_container">
+    <div class="edit_form_div">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="item_name" class="col-sm-2 control-label">商品名称：</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="item_name" placeholder="商品名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="item_category" class="col-sm-2 control-label">商品类别：</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="item_category">
+                      <option value="0">数码</option>
+                      <option value="1">书籍</option>
+                      <option value="2">其它</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="item_price" class="col-sm-2 control-label">商品单价：</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="item_price" placeholder="商品单价">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="item_price" class="col-sm-2 control-label">商品描述：</label>
+                <div class="col-sm-10">
+                  <textarea id="item_describe" class="form-control" placeholder="item_describe"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <button class="btn btn-info add_image_btn">添加图片<input type="file" accept="image/*"></button>
+    <div class="item_images_container">
+    </div>
+    <div class="btn_container">
+        <button class="save_btn">保存</button>
+        <button class="publish_btn">发布</button>
+        <button class="cancel_publish_btn">撤销发布</button>
+    </div>
+</div>
+{% block js %}
+<script type="text/javascript" src="/static/lib/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/edit_item.js"></script>
+{% endblock js %}
+{% endblock body %}

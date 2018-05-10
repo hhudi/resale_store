@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}登录{% endblock title %}
+{% block css %}
+<style type="text/css">
+    .login_div{
+        width: 70%;
+        margin: 100px auto;
+        padding: 50px;
+        text-align: center;
+        border: 1px solid #eee;
+        line-height: 50px;
+    }
+</style>
+{% endblock css %}
+{% block body %}
+<div class="login_div">
+    <form method="post" url="/login">
+        <div><input type="text" name="account" placeholder="account"></div>
+        <div><input type="password" name="password" placeholder="password"></div>
+        <button>登录</button>
+    </form>
+</div>
+{% endblock body %}

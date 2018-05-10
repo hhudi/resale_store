@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title %}书籍{% endblock title %}
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.min.css">
+<style type="text/css">
+    .header{
+        width: 90%;
+        min-width: 1280px;
+        height: 60px;
+        margin: 60px auto 20px;
+        border: 1px solid #ccc;
+        border-top: 2px solid #bbb;
+    }
+    .user_div{
+        width: 260px;
+        height: 100%;
+        border-right: 1px solid #bbb;
+        float: left;
+        position: relative;
+    }
+    .profile_image{
+        width: 30px;height: 30px;
+        position: absolute;
+        left: 15%;top: 50%;transform: translate(-50%,-50%);
+    }
+    .simple{
+        width: 180px;height:60px;
+        position: absolute;
+        left: 60%;top: 50%;transform: translate(-50%,-50%);
+    }
+    .item_simple_info{
+        width: 200px;
+        height: 60px;
+        float: left;
+        border-right: 1px solid #bbb;
+        text-align: center;
+    }
+    .item_simple_info .p{
+        margin: 10px 0 0;
+    }
+    .main_wrap{
+        width: 90%;
+        min-width: 1040px;
+        margin: 0 auto 50px;
+        overflow: hidden;
+    }
+    .item_img_swiper{
+        width: 730px;
+        height: 490px;
+        float: left;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .item_property{
+        width: 440px;
+        float: left;
+    }
+    .swiper-container{
+        width: 100%;
+        height: 100%;
+    }
+    .swiper-slide{
+        background: #eee;
+    }
+    .item_img{
+        height: 100%;
+        position: absolute;
+        left: 50%;top: 50%;
+        transform: translate(-50%,-50%);
+    }
+</style>
+{% endblock css %}
+{% block body %}
+    {% block content %}
+    <div class="header">
+        {% if item %}
+        <div class="user_div">
+            {%if current_user.profile_image %}
+            <img class="profile_image" src="/var/profile_images/{{current_user.profile_image}}">
+            {%else%}
+            <img class="profile_image" src="/var/profile_images/default_profile_image.jpg">
+            {%endif%}
+            <div class="simple">
+                <p>{{ current_user.account }}</p>
+                <p>注册于:{{ current_user.created_time }}</p>
+            </div>
+        </div>
+        <div class="item_simple_info">
+            <p class="p">最近编辑</p>
+            <p>{{ item.update_time }}</p>
+        </div>
+        {% else %}
+            <h3>出错啦</h3>
+        {% endif %}
+    </div>
+    <div class="content">
+        <div class="main_wrap">
+            <div class="item_img_swiper">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        {% for img in images %}
+                        <div class="swiper-slide"><img class="item_img" src="/var/item_images/{{img.filename}}" alt=""></div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+
+            <div class="item_property"></div>
+        </div>
+    </div>
+    {% endblock content %}
+    
+
+
+    {% block js %}
+    <script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
+    <script>
+        $('html').height($('body').height());
+        var mySwiper = new Swiper ('.swiper-container', {
+            direction: 'horizontal',
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable :true,
+            },
+        }); 
+    </script>
+    {% endblock js %}
+{% endblock body %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

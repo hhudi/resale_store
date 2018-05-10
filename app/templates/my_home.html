@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% block title %}个人中心{% endblock title %}
+{% block css %}
+<style type="text/css">
+    .info_div{
+        display: inline-block;
+        width:200px;
+        margin: 60px auto 0;
+        vertical-align: top;
+        border: 1px solid #eee;
+        text-align: center;
+        padding-bottom: 20px;
+    }
+    .profile_image{
+        width: 200px;
+        height: 200px;
+    }
+    .change_image_btn{
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+    }
+    .change_image_btn input{
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+    .item_list_container{
+        display: inline-block;
+        width: calc(100% - 240px);
+        margin-top: 60px;
+    }
+    .item_list_div{
+        display: block;
+        width: 99%;
+        margin: 10px;
+        border: 1px solid #eee;
+    }
+    .item_list_div > div{
+        display: inline-block;
+        vertical-align: middle;
+        padding: 10px;
+    }
+    .item_list_div > div:nth-child(2){
+    }
+    .item_list_div > div:nth-child(3){
+        float: right;
+        width: 10%;
+        text-align: center;
+        line-height: 100%;
+    }
+    .item_main_image{
+        width: 100px;
+        height: 100px;
+        background: #eee;
+        border: none;
+    }
+</style>
+{% endblock css %}
+{% block body %}
+<div class="info_div">
+    <div>
+        {%if current_user.profile_image %}
+        <img class="profile_image" src="/var/profile_images/{{current_user.profile_image}}">
+        {%else%}
+        <img class="profile_image">
+        {%endif%}
+    </div>
+    <div>
+        <h2>{{current_user.account}}</h2>
+        <button class="change_image_btn">修改头像<input type="file" accept="image/*"></button>
+        <button onclick="location.href='/edit_item'">发布物品</button>
+    </div>
+</div>
+
+<div class="item_list_container">
+    {% if items%}
+        {%for item in items%}
+        <div class="item_list_div">
+            <div>
+                {%if item.main_image %}
+                    <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
+                {%else%}
+                    <img class="item_main_image">
+                {%endif%}
+            </div>
+            <div>
+                <div>{{item.name}}</div>
+                <div>{{item.describe}}</div>
+            {{['未发布', '已发布', '锁定中', '已卖出', '已删除'][item.status]}}
+            </div>
+            <div>
+                {%if item.status==0 %}
+                    <button onclick="window.location.href='/edit_item?sn={{item.sn}}'">修改</button>
+                    <button onclick="change_status('{{item.sn}}', 1)">发布</button>
+                    <button onclick="change_status('{{item.sn}}', 4)">删除</button>
+                {%elif item.status==1 %}
+                    <button onclick="change_status('{{item.sn}}', 0)">取消发布</button>
+                    <button onclick="change_status('{{item.sn}}', 4)">删除</button>
+                {%elif item.status==2 %}
+                    <button onclick="window.location.href='/edit_item?sn={{item.sn}}'">查看</button>
+                {%elif item.status==3 %}
+                    <button onclick="window.location.href='/edit_item?sn={{item.sn}}'">查看</button>
+                    <button onclick="change_status('{{item.sn}}', 0)">取消发布</button>
+                    <button onclick="change_status('{{item.sn}}', 4)">删除</button>
+                {%endif%}
+            </div>
+        </div>
+        {%endfor%}
+    {%else%}
+        <div>no items</div>
+    {%endif%}
+
+</div>
+
+<script type="text/javascript" src="/static/lib/jquery.min.js"></script>
+<script type="text/javascript">
+    $('.change_image_btn input').change(function(){
+        var input = $(this);
+        var files=input.prop('files');
+        if (files.length > 0){
+            input.attr('disabled','disabled');
+            var file = files[0];
+            var form_data = new FormData();
+            form_data.append('file', file);
+            $.ajax({
+                url:"/profile_image",
+                type:'POST',
+                data: form_data,
+                cache:false,
+                processData:false,
+                contentType:false,
+                dataType: 'json',
+                success:function(Data){
+                    if (Data.code==0){
+                        location.reload();
+                    }else{
+                        alert(Data.msg);
+                    }
+                },
+                error:function(){
+                  alert("upload error");
+                },
+                finally:function(){
+                    input.removeAttr('disabled');
+                }
+            });
+        };
+    });
+
+function change_status(item_sn, status){
+    $.ajax({
+        url:"/item/"+item_sn+'/status/'+status,
+        type:'GET',
+        dataType: 'json',
+        success:function(Data){
+            console.log(Data);
+            if (Data.code==0){
+                location.reload();
+            }else{
+                alert(Data.msg);
+            }
+        },
+        error:function(){
+          alert("change status error");
+        }
+    });
+}
+</script>
+{% endblock body %}

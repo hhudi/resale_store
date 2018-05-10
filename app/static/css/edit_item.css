@@ -1,0 +1,92 @@
+.edit_container{
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+}
+.edit_form_div{
+    width: 100%;
+}
+.edit_form_div .form-group{
+}
+.item_images_container{
+    border: 1px solid #eee;
+    padding: 10px;
+    margin: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.add_image_btn{
+    position: relative;
+    overflow: hidden;
+}
+.add_image_btn input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+.item_images_container{
+    text-align: left;
+    display: block;
+}
+.btn_container{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid #eee;
+    background: #fff;
+}
+.btn_container button{
+    padding: 5px 10px;
+    margin: 5px 10px;
+}
+.item_image_div_main{
+border: 5px solid blue;
+}
+.item_image_div{
+    position: relative;
+    display: inline-block;
+    margin: 3px;
+    width: 260px;
+    height: 260px;
+}
+.item_image_div:hover > div{
+    display: block;
+}
+.item_image_div img{
+    width: 100%;
+    height: 100%;
+}
+.item_image_div > div{
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    background: #333;
+    opacity: 0.5;
+}
+.item_image_div > div > div{
+    width: 100%;
+    line-height: 130px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.1rem;
+}
+.item_image_div > div > div:hover{
+    background: #000;
+    color: #fff;
+}

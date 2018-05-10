@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}书籍{% endblock title %}
+{% block css %}
+<style type="text/css">
+    .main_content{
+        width: 80%;
+        margin: 60px auto 0;
+    }
+    .book_item{
+        width: 820px;margin: 0 auto;
+        overflow: hidden;
+    }
+    .bk_item{
+        list-style: none;
+        float: left;
+        margin: 0 5px 22px 0px;
+        width: 182px;
+        height: 200px;
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+        background: #eee;
+    }
+    ul.cate_item_list{
+        width: 800px;
+        margin: 0 auto;
+    }
+    .item_pic{
+        width: 100%;
+        overflow: hidden;
+        height: calc(100% - 60px);
+    }
+    .item_main_image, .item_default_image{
+        height: 100%;
+    }
+    .item_title{
+        text-align: right;
+        margin: 5px 0px;
+    }
+    .price_item{
+        text-align: right;
+    }
+    .price_item p{
+        color: red;
+    }
+    .glyphicon-yen{
+        color: #999;
+    }
+</style>
+{% endblock css %}
+{% block body %}
+    {% block content %}
+    <div class="main_content">
+        <div class="book_item">
+            <div class="title_book category_title">
+                <h3>你想要的宝贝都在这啦～</h3>
+                <hr>
+            </div>
+            <ul class="book_item_list cate_item_list">
+                {% if bk_items %}
+                    {% for item in bk_items %}
+                    <li class="bk_item">
+                        <a href="" title="查看详情">
+                            <div class="item_pic">
+                                {%if item.main_image %}
+                                    <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
+                                {%else%}
+                                    <img class="item_default_image" src="{{ url_for('static', filename='img/store_icon.png') }}">
+                                {%endif%}
+                            </div>
+                        </a>
+                        <p class="item_title">{{ item.name }}</p>
+                        <div class="price_item">
+                            <p><span class="glyphicon glyphicon-yen"></span>{{ item.price }}</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                {%else%}
+                    <div>还没有人发布商品~~~</div>
+                {%endif%}
+            </ul>
+        </div>
+    </div>
+    {% endblock content %}
+    
+    {% block js %}
+        <script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    {% endblock js %}
+    
+
+{% endblock body %}

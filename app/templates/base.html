@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    {% block css %}
+        
+    {% endblock css %}
+    <style>
+        .store_icon_brand {
+            padding: 1px 15px !important;
+        }
+        .store_icon{
+            display: inline;
+        }
+        .foot{
+            width: 100%;
+            min-width: 1040px;
+            background: #000;
+            height: 260px;
+            padding: 40px 0 0;
+        }
+        .idle-footer-links-box{
+            width: 820px;height: 125px;
+            margin: 0 auto;
+            text-align: center;
+            background: url('https://gtms02.alicdn.com/tps/i2/TB1W6egHVXXXXXHXXXXyZnLYXXX-740-115.png') no-repeat 0 0;
+        }
+        .idle-footer-links-box a{
+            width: 125px;height: 125px;display: inline;
+            float: left;
+            text-indent: -9999em;
+            margin: 0 46px;
+        }
+        a.idle-footer-link-auth{
+            margin-left: 0px;
+        }
+        .address{
+            width: 100%;
+            line-height: 30px;
+            font-size: 16px;
+            /*background: #ccc;*/
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand store_icon_brand" href="#"><img src="{{ url_for('static', filename='img/store_icon.png') }}" alt="" class="store_icon"></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="{{ url_for('index') }}">首页 <span class="sr-only">(current)</span></a></li>
+            <li><a href="/digital_items">闲置数码</a></li>
+            <li><a href="/book_items">闲置书籍</a></li>
+            <li><a href="/other_items">其它</a></li>
+          </ul>
+          <form class="navbar-form navbar-left">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">搜索</button>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            {%if current_user and current_user.is_authenticated%}
+                <!-- <li><span>欢迎 {{current_user.account}}</span></li> -->
+                <p class="navbar-text">欢迎 {{current_user.account}}</p>
+                <li><a href="/my_home">个人中心</a></li>
+                <li><a href="/logout">注销</a></li>
+            {%else%}
+                <li><a href="/login">登录</a></li>
+                <li><a href="/register">注册</a></li>
+            {%endif%}
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    {% block body %}
+    {% block content %}
+    {% endblock content %}
+    
+    {% block js %}
+     
+    {% endblock js %}
+    {% endblock body %}
+    <div class="foot">
+        <div class="idle-footer-links-box">
+            <a href="#nogo" target="_self" class="idle-footer-link-auth">卖家实名认证</a>
+            <a href="#nogo" target="_self" class="idle-footer-link-alipay">支付宝担保交易</a>
+            <a href="#nogo" target="_self" class="idle-footer-link-team">专业团队支撑</a>
+            <a href="http://weibo.com/taoershou" class="idle-footer-link-weibo">官方微博</a>
+        </div>
+        <div class="address">
+            COPYRIGHT 2018 BY hhudi ALL RIGHTS RESERVED
+        </div>
+    </div>
+    
+</body>
+</html>

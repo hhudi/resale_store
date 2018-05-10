@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}首页{% endblock title %}
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock css %}
+{% block body %}
+    {% block content %}
+    <div class="main_content">
+        <div class="main">
+            <!-- <div class="left_category main_item">
+                <div class="category_btn digital_btn">闲置数码</div>
+                <div class="category_btn book_btn">闲置书籍</div>
+                <div class="category_btn others_btn">其它</div>
+            </div> -->
+            <ul class="list-group left_category main_item">
+              <li class="list-group-item category_btn digital_btn" onclick="window.location.href='/digital_items'">闲置数码</li>
+              <li class="list-group-item category_btn book_btn" onclick="window.location.href='/book_items'">闲置书籍</li>
+              <li class="list-group-item category_btn others_btn" onclick="window.location.href='/other_items'">其它</li>
+            </ul>
+            <div class="middle_swiper main_item">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="{{ url_for('static', filename='img/swiper1.jpg') }}" alt=""></div>
+                        <div class="swiper-slide"><img src="{{ url_for('static', filename='img/swiper2.jpg') }}" alt=""></div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+            <div class="right_release main_item">
+                <div class="mod_release_btn">
+                    <span class="main-title">立即发布</span>
+                    <span class="subtitle">发布闲置 快速出手</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category_content">
+            <div class="digital_item">
+                <div class="title_digital category_title">
+                    <h3>3C数码也狂欢--</h3>
+                    <hr>
+                </div>
+                <ul class="digital_item_list cate_item_list">
+                    {% if dig_items %}
+                        {% for item in dig_items %}
+                        <li class="dig_item">
+                            <a href="" title="查看详情">
+                                <div class="item_pic">
+                                    {%if item.main_image %}
+                                        <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
+                                    {%else%}
+                                        <img class="item_default_image" src="{{ url_for('static', filename='img/store_icon.png') }}">
+                                    {%endif%}
+                                </div>
+                            </a>
+                            <p class="item_title">{{ item.name }}</p>
+                            <div class="price_item">
+                                <p><span class="glyphicon glyphicon-yen"></span>{{ item.price }}</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    {%else%}
+                        <div>还没有人发布商品~~~</div>
+                    {%endif%}
+                </ul>
+            </div>
+
+            <div class="book_item">
+                <div class="title_book category_title">
+                    <h3>人美也要多读书--</h3>
+                    <hr>
+                </div>
+                <ul class="book_item_list cate_item_list">
+                    {% if bk_items %}
+                        {% for item in bk_items %}
+                        <li class="bk_item">
+                            <a href="" title="查看详情">
+                                <div class="item_pic">
+                                    {%if item.main_image %}
+                                        <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
+                                    {%else%}
+                                        <img class="item_default_image" src="{{ url_for('static', filename='img/store_icon.png') }}">
+                                    {%endif%}
+                                </div>
+                            </a>
+                            <p class="item_title">{{ item.name }}</p>
+                            <div class="price_item">
+                                <p><span class="glyphicon glyphicon-yen"></span>{{ item.price }}</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    {%else%}
+                        <div>还没有人发布商品~~~</div>
+                    {%endif%}
+                </ul>
+            </div>
+
+            <div class="other_item">
+                <div class="title_other category_title">
+                    <h3>精彩百货来亮相--</h3>
+                    <hr>
+                </div>
+                <ul class="other_item_list cate_item_list">
+                    {% if oth_items %}
+                        {% for item in oth_items %}
+                        <li class="oth_item">
+                            <a href="" title="查看详情">
+                                <div class="item_pic">
+                                    {%if item.main_image %}
+                                        <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
+                                    {%else%}
+                                        <img class="item_default_image" src="{{ url_for('static', filename='img/store_icon.png') }}">
+                                    {%endif%}
+                                </div>
+                            </a>
+                            <p class="item_title">{{ item.name }}</p>
+                            <div class="price_item">
+                                <p><span class="glyphicon glyphicon-yen"></span>{{ item.price }}</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    {%else%}
+                        <div>还没有人发布商品~~~</div>
+                    {%endif%}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+    
+    {% block js %}
+        <script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
+        <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    {% endblock js %}
+    
+
+{% endblock body %}
