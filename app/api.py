@@ -22,21 +22,12 @@ def init_api(app):
         oth_items = Item.query.filter_by(status=1, category=2).order_by(Item.created_time.desc()).limit(4).all()
         return render_template('index.html', dig_items=dig_items, bk_items=bk_items, oth_items=oth_items)
 
-    @app.route('/digital_items')
-    def digital_items():
-        dig_items = Item.query.filter_by(status=1, category=0).order_by(Item.created_time.desc()).all()
-        print(dig_items)
-        return render_template('digital_item.html', dig_items=dig_items)
-
-    @app.route('/book_items')
-    def book_items():
-        bk_items = Item.query.filter_by(status=1, category=1).order_by(Item.created_time.desc()).all()
-        return render_template('book_item.html', bk_items=bk_items)
-
-    @app.route('/other_items')
-    def other_items():
-        oth_items = Item.query.filter_by(status=1, category=2).order_by(Item.created_time.desc()).all()
-        return render_template('other_item.html', oth_items=oth_items)
+    # 商品分类
+    @app.route('/category_items')
+    def category_items():
+        category_num = int(request.args.get('category'))
+        items = Item.query.filter_by(status=1, category=category_num).order_by(Item.created_time.desc()).all()
+        return render_template('category_items.html', items=items)
 
     @app.route('/register', methods=['GET', 'POST'])
     def register():
@@ -86,7 +77,18 @@ def init_api(app):
     @app.route('/edit_item')
     @login_required
     def edit_item():
-        return render_template('edit_item.html')
+        item_sn = request.args.get('sn')
+        print(item_sn)
+        item = Item.query.filter_by(sn=item_sn).first()
+        if item:
+            item_dict = {'name': item.name,
+                'price': item.price,
+                'category': item.category,
+                'describe': item.describe}
+        else:
+            item_dict = ''
+        return render_template('edit_item.html', item=item_dict)
+        
 
     @app.route('/profile_image', methods=['POST'])
     @login_required
@@ -116,22 +118,27 @@ def init_api(app):
     @app.route('/item/<item_sn>', methods=['GET'])
     @login_required
     def get_item_images(item_sn):
-        print('usr: '+current_user.sn)
-        print('sn: '+item_sn)
         item = Item.query.filter_by(sn=item_sn).first()
-        print(item)
         if not item:
-            return dumps({'code':-1, 'msg': 'not find item'})
-        item_dict = {'name':item.name,
-                    'price':item.price,
-                    'category':item.category,
-                    'describe':item.describe,
-                    'update_time':item.update_time}
+            return dumps({'code': -1, 'msg': 'not find item'})
+        item_dict = {'name': item.name,
+                    'price': item.price,
+                    'category': item.category,
+                    'describe': item.describe,
+                    'update_time': item.update_time}
 
         item_images = ItemImage.query.filter_by(item_sn=item_sn,deleted=False).all()
         images = [{'filename': image.filename,'is_main': image.is_main} for image in item_images]
         # dumps({'code': 0, 'item': item_dict, 'images': images})
         return render_template('ditail_item.html', item=item_dict, images=images)
+
+    @app.route('/item/filter', methods=['GET'])
+    def filter_item():
+        condition = request.args.get('condition')
+        print(condition)
+        items = Item.query.filter(Item.name.like('%'+condition+'%')).all()
+        return render_template('category_items.html', items=items)
+
 
     @app.route('/item', methods=['POST'])
     @login_required
@@ -206,3 +213,8 @@ def init_api(app):
         ItemImage.query.filter_by(item_sn=item_sn,filename=filename).update({'deleted': True})
         db.session.commit()
         return dumps({'code': 0})
+
+    @app.route('/order/confirm_order', methods=['GET', 'POST'])
+    @login_required
+    def confirm_order():
+        return render_template('confirm_order.html')

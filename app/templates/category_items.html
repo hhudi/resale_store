@@ -1,14 +1,13 @@
 {% extends "base.html" %}
-{% block title %}数码{% endblock title %}
+{% block title %}分类商品{% endblock title %}
 {% block css %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.min.css">
-{# <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"> #}
 <style type="text/css">
     .main_content{
         width: 80%;
         margin: 60px auto 0;
     }
-    .digital_item{
+    .category_item{
         width: 820px;margin: 0 auto;
         overflow: hidden;
     }
@@ -52,15 +51,15 @@
 {% block body %}
     {% block content %}
     <div class="main_content">
-        <div class="digital_item">
-            <div class="title_digital category_title">
+        <div class="category_item">
+            <div class="title_category category_title">
                 <h3>你想要的宝贝都在这啦～</h3>
                 <hr>
             </div>
-            <ul class="digital_item_list cate_item_list">
-                {% if dig_items %}
-                    {% for item in dig_items %}
-                    <li class="dig_item">
+            <ul class="category_item_list cate_item_list">
+                {% if items %}
+                    {% for item in items %}
+                    <li class="cate_item">
                         <a href="/item/{{item.sn}}" title="查看详情">
                             <div class="item_pic">
                                 {%if item.main_image %}
@@ -85,11 +84,7 @@
     {% endblock content %}
     
     {% block js %}
-        <script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
-        {# <script src="{{ url_for('static', filename='js/index.js') }}"></script> #}
-        <script>
-            
-        </script>
+        {{ super() }}
     {% endblock js %}
     
 

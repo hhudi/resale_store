@@ -3,6 +3,7 @@ var current_item_sn = "";
 var url_sn = new URL(document.URL).searchParams.get("sn");
 if (url_sn!=null){current_item_sn=url_sn}
 
+console.log(current_item_sn);
 refresh_data(current_item_sn);
 $('.save_btn').click(function(){
     var upload_success_callback=function(){
@@ -32,6 +33,7 @@ $('.add_image_btn input').change(function(){
             form_data.append('file_' + i, files[i]);
         }
     };
+    console.log(form_data);
     upload_data(form_data, 0, function(){});
 });
 
@@ -54,7 +56,6 @@ function get_form_data(){
 
 function upload_data(form_data, status, success_callback){
     form_data.append('item_status', status);
-    console.log(form_data);
     $('input,button,textarea').attr('disabled','disabled');
     $.ajax({
             url:"/item",
@@ -119,7 +120,8 @@ function refresh_data(item_sn){
                 location.href="/my_home";
             }
         },
-        error:function(){
+        error:function(data){
+            // console.log(data);
           alert("refresh data error");
         }
     });

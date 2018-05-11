@@ -8,6 +8,7 @@ class User(db.Model):
     sn = db.Column(db.String(36), unique=True, default=str(uuid1()).replace('-',''))
     account = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
+    telephone = db.Column(db.Integer, nullable=True)
     profile_image = db.Column(db.String(64))
     created_time = db.Column(db.DateTime, default=datetime.now)
     def is_authenticated(self):

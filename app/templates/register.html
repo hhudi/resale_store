@@ -3,21 +3,50 @@
 {% block css %}
 <style type="text/css">
     .register_div{
-        width: 70%;
+        width: 550px;
         margin: 100px auto;
         padding: 50px;
         text-align: center;
         border: 1px solid #eee;
         line-height: 50px;
     }
+    .center-block {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .profile_image_div{
+        height: 100px;
+    }
+    .profile_image{
+        height: 100%;
+    }
 </style>
 {% endblock css %}
 {% block body %}
 <div class="register_div">
-    <form method="post" url="/register">
-        <div><input type="text" name="account" placeholder="account"></div>
-        <div><input type="password" name="password" placeholder="password"></div>
-        <button>注册</button>
+    <div class="profile_image_div">
+        <img class="img-circle profile_image center-block" src="/var/profile_images/default_profile_image.jpg"></img>
+    </div>
+    <form method="post" url="/register" class="form-horizontal">
+        <div class="form-group">
+            <label for="account" class="col-sm-2 control-label">账号：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="account" name="account" placeholder="请输入账号">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-info btn-login">注册</button>
+            </div>
+        </div>
+
     </form>
 </div>
 {% endblock body %}

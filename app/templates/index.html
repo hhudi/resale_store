@@ -14,9 +14,9 @@
                 <div class="category_btn others_btn">其它</div>
             </div> -->
             <ul class="list-group left_category main_item">
-              <li class="list-group-item category_btn digital_btn" onclick="window.location.href='/digital_items'">闲置数码</li>
-              <li class="list-group-item category_btn book_btn" onclick="window.location.href='/book_items'">闲置书籍</li>
-              <li class="list-group-item category_btn others_btn" onclick="window.location.href='/other_items'">其它</li>
+              <li class="list-group-item category_btn digital_btn" onclick="window.location.href='/category_items?category=0'">闲置数码</li>
+              <li class="list-group-item category_btn book_btn" onclick="window.location.href='/category_items?category=1'">闲置书籍</li>
+              <li class="list-group-item category_btn others_btn" onclick="window.location.href='/category_items?category=2'">其它</li>
             </ul>
             <div class="middle_swiper main_item">
                 <div class="swiper-container">
@@ -45,7 +45,7 @@
                     {% if dig_items %}
                         {% for item in dig_items %}
                         <li class="dig_item">
-                            <a href="" title="查看详情">
+                            <a href="/item/{{item.sn}}" title="查看详情">
                                 <div class="item_pic">
                                     {%if item.main_image %}
                                         <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
@@ -75,7 +75,7 @@
                     {% if bk_items %}
                         {% for item in bk_items %}
                         <li class="bk_item">
-                            <a href="" title="查看详情">
+                            <a href="/item/{{item.sn}}" title="查看详情">
                                 <div class="item_pic">
                                     {%if item.main_image %}
                                         <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
@@ -105,7 +105,7 @@
                     {% if oth_items %}
                         {% for item in oth_items %}
                         <li class="oth_item">
-                            <a href="" title="查看详情">
+                            <a href="/item/{{item.sn}}" title="查看详情">
                                 <div class="item_pic">
                                     {%if item.main_image %}
                                         <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
@@ -130,7 +130,7 @@
     {% endblock content %}
     
     {% block js %}
-        <script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
+        {{ super() }}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
         <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     {% endblock js %}

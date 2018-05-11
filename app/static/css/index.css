@@ -15,6 +15,7 @@
 .left_category{
     flex: 1;
     min-width: 200px;
+    border: 1px solid #ccc;
 }
 .middle_swiper{
     flex: 2;
@@ -24,6 +25,7 @@
 .right_release{
     flex: 1;
     min-width: 200px;
+    border: 1px solid #ccc;
 }
 .subtitle{
     cursor: text;

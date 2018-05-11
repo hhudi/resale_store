@@ -113,8 +113,8 @@
     {%endif%}
 
 </div>
-
-<script type="text/javascript" src="/static/lib/jquery.min.js"></script>
+{% block js %}
+{{ super() }}
 <script type="text/javascript">
     $('.change_image_btn input').change(function(){
         var input = $(this);
@@ -168,4 +168,5 @@ function change_status(item_sn, status){
     });
 }
 </script>
+{% endblock js %}
 {% endblock body %}
