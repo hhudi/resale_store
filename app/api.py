@@ -4,7 +4,7 @@ from app.utils.user_util import validate_user, register_user
 from uuid import uuid4
 from json import dumps
 from app import db
-from app.models import Item, ItemImage
+from app.models import Item, ItemImage, UserAddress, ItemOrder
 import os
 
 def init_api(app):
@@ -68,15 +68,15 @@ def init_api(app):
         return redirect(url_for('.index'))
 
 
-    @app.route('/my_home')
+    @app.route('/page/home')
     @login_required
-    def my_home():
+    def page_home():
         items = Item.query.filter_by(user_sn=current_user.sn).filter(Item.status!=4).order_by(Item.created_time.desc()).all()
-        return render_template('my_home.html', items=items)
+        return render_template('home_index.html', items=items)
 
-    @app.route('/edit_item')
+    @app.route('/page/edit_item')
     @login_required
-    def edit_item():
+    def page_edit_item():
         item_sn = request.args.get('sn')
         print(item_sn)
         item = Item.query.filter_by(sn=item_sn).first()
@@ -114,11 +114,39 @@ def init_api(app):
 
         return dumps({'code': 0, 'filename': file_name})
 
+    @app.route('/page/address')
+    @login_required
+    def page_address():
+        addresss = UserAddress.query.filter_by(user_sn=current_user.sn, deleted=False).order_by(UserAddress.created_time.desc()).all()
+        return render_template('home_address.html', addresss=addresss)
+
+    @app.route('/address/<address_sn>', methods=['DELETE'])
+    @login_required
+    def del_address(address_sn):
+        UserAddress.query.filter_by(sn=address_sn).update({'deleted': True})
+        db.session.commit()
+        return dumps({'code': 0})
+
+    @app.route('/address', methods=['POST'])
+    @login_required
+    def add_address():
+        address = request.form['address']
+        people = request.form['people']
+        mobile = request.form['mobile']
+
+        print(address, people, mobile)
+
+        add = UserAddress(user_sn=current_user.sn, address=address, people=people, mobile=mobile)
+        db.session.add(add)
+        db.session.commit()
+        return redirect(url_for('.page_address'))
+
+
     @app.route('/item/filter', methods=['GET'])
     def filter_item():
         condition = request.args.get('condition')
         print(condition)
-        items = Item.query.filter(Item.name.like('%'+condition+'%')).all()
+        items = Item.query.filter(Item.name.like('%'+condition+'%')).filter_by(status=1).all()
         return render_template('category_items.html', items=items)
 
     @app.route('/item/<item_sn>', methods=['GET'])
@@ -144,16 +172,13 @@ def init_api(app):
         item = Item.query.filter_by(sn=item_sn).first()
         if not item:
             return dumps({'code': -1, 'msg': 'not find item'})
-        item_dict = {'name': item.name,
-                    'price': item.price,
-                    'category': item.category,
-                    'describe': item.describe,
-                    'update_time': item.update_time}
+        if item.status != 1:
+            return dumps({'code':-2, 'msg':'status is not allowed'})
 
         item_images = ItemImage.query.filter_by(item_sn=item_sn,deleted=False).all()
         print(item_images)
         images = [{'filename': image.filename,'is_main': image.is_main} for image in item_images]
-        return render_template('ditail_item.html', item=item_dict, images=images)
+        return render_template('detail_item.html', item=item, images=images)
 
     @app.route('/item', methods=['POST'])
     @login_required
@@ -172,6 +197,7 @@ def init_api(app):
             item = Item(user_sn=current_user.sn, name=item_name, price=item_price, category=item_category, describe=item_describe)
             db.session.add(item)
             db.session.commit()
+            db.session.flush()
             db.session.refresh(item)
         else:
             Item.query.filter_by(sn=item_sn).update({'name': item_name,
@@ -231,7 +257,78 @@ def init_api(app):
         db.session.commit()
         return dumps({'code': 0})
 
-    @app.route('/order/confirm_order', methods=['GET', 'POST'])
+    @app.route('/page/confirm_order/<item_sn>', methods=['GET', 'POST'])
     @login_required
-    def confirm_order():
-        return render_template('confirm_order.html')
+    def page_confirm_order(item_sn):
+        item = Item.query.filter_by(sn=item_sn).first()
+        if item.status != 1:
+            return dumps({'code':-1, 'msg':'status is not allowed'})
+
+        default_address = UserAddress.query.filter_by(user_sn=current_user.sn,is_default=True,deleted=False).first()
+        if not default_address:
+            default_address = UserAddress.query.filter_by(user_sn=current_user.sn,deleted=False).order_by(UserAddress.created_time.desc()).first()
+
+        return render_template('order_confirm.html', item=item, address=default_address)
+
+
+
+    @app.route('/order', methods=['POST'])
+    @login_required
+    def add_order():
+        item_sn = request.form.get('item_sn')
+        address_sn = request.form.get('address_sn')
+        print(item_sn)
+        item = Item.query.filter_by(sn=item_sn, deleted=False).first()
+        if not item:
+            return dumps({'code':-1, 'msg':'no item'})
+
+        address = UserAddress.query.filter_by(sn=address_sn).first()
+        if not address:
+            return dumps({'code':-2, 'msg':'no address'})
+
+        order = ItemOrder(user_sn=current_user.sn, 
+                        seller_sn=item.user_sn, 
+                        item_sn=item.sn, 
+                        item_name=item.name, 
+                        item_price=item.price, 
+                        main_image=item.main_image, 
+                        people=address.people, 
+                        mobile=address.mobile, 
+                        address=address.address)
+        db.session.add(order)
+
+        Item.query.filter_by(sn=item_sn).update({'status':2})
+        db.session.commit()
+
+        
+        return dumps({'code':0, 'order_sn':order.sn})
+
+
+    @app.route('/page/orders')
+    @login_required
+    def page_orders():
+        orders = ItemOrder.query.filter_by(user_sn=current_user.sn, deleted=False).all()
+        return render_template('home_order.html', orders=orders)
+
+
+    @app.route('/page/order/<order_sn>')
+    @login_required
+    def page_pay(order_sn):
+        order = ItemOrder.query.filter_by(sn=order_sn, deleted=False).first()
+        return render_template('order.html', order=order)
+
+
+    @app.route('/pay_order/<order_sn>')
+    @login_required
+    def pay_order(order_sn):
+        order = ItemOrder.query.filter_by(sn=order_sn, deleted=False).first()
+        if not order:
+            return dumps({'code':-1, 'msg':'no order'})
+        if order.status == 1:
+            return dumps({'code':-2, 'msg':'order already paid'})
+
+        ItemOrder.query.filter_by(sn=order_sn).update({'status':1})
+        Item.query.filter_by(sn=order.item_sn).update({'status':3})
+        db.session.commit()
+
+        return dumps({'code':0})

@@ -20,6 +20,6 @@ $(function(){
         }
     }*/
     $('.main-title').click(function(){
-        window.location.href = '/edit_item';
+        window.location.href = '/page/edit_item';
     });
 })

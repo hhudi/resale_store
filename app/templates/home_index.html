@@ -1,35 +1,10 @@
-{% extends "base.html" %}
+{% extends "home_base.html" %}
 {% block title %}个人中心{% endblock title %}
 {% block css %}
+{{ super() }}
 <style type="text/css">
-    .info_div{
-        display: inline-block;
-        width:200px;
-        margin: 60px auto 0;
-        vertical-align: top;
-        border: 1px solid #eee;
-        text-align: center;
-        padding-bottom: 20px;
-    }
-    .profile_image{
-        width: 200px;
-        height: 200px;
-    }
-    .change_image_btn{
-        margin: 0 auto;
-        position: relative;
-        overflow: hidden;
-    }
-    .change_image_btn input{
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0;
-    }
     .item_list_container{
-        display: inline-block;
-        width: calc(100% - 240px);
-        margin-top: 60px;
+        width: 100%;
     }
     .item_list_div{
         display: block;
@@ -58,22 +33,8 @@
     }
 </style>
 {% endblock css %}
-{% block body %}
-<div class="info_div">
-    <div>
-        {%if current_user.profile_image %}
-        <img class="profile_image" src="/var/profile_images/{{current_user.profile_image}}">
-        {%else%}
-        <img class="profile_image">
-        {%endif%}
-    </div>
-    <div>
-        <h2>{{current_user.account}}</h2>
-        <button class="change_image_btn">修改头像<input type="file" accept="image/*"></button>
-        <button onclick="location.href='/edit_item'">发布物品</button>
-    </div>
-</div>
 
+{% block home_right_container %}
 <div class="item_list_container">
     {% if items%}
         {%for item in items%}
@@ -92,16 +53,16 @@
             </div>
             <div>
                 {%if item.status==0 %}
-                    <button onclick="window.location.href='/edit_item?sn={{item.sn}}'">修改</button>
+                    <button onclick="window.location.href='/page/edit_item?sn={{item.sn}}'">修改</button>
                     <button onclick="change_status('{{item.sn}}', 1)">发布</button>
                     <button onclick="change_status('{{item.sn}}', 4)">删除</button>
                 {%elif item.status==1 %}
                     <button onclick="change_status('{{item.sn}}', 0)">取消发布</button>
                     <button onclick="change_status('{{item.sn}}', 4)">删除</button>
                 {%elif item.status==2 %}
-                    <button onclick="window.location.href='/edit_item?sn={{item.sn}}'">查看</button>
+                    <button onclick="window.location.href='/page/edit_item?sn={{item.sn}}'">查看</button>
                 {%elif item.status==3 %}
-                    <button onclick="window.location.href='/edit_item?sn={{item.sn}}'">查看</button>
+                    <button onclick="window.location.href='/page/edit_item?sn={{item.sn}}'">查看</button>
                     <button onclick="change_status('{{item.sn}}', 0)">取消发布</button>
                     <button onclick="change_status('{{item.sn}}', 4)">删除</button>
                 {%endif%}
@@ -113,42 +74,11 @@
     {%endif%}
 
 </div>
+{% endblock home_right_container %}
+
 {% block js %}
 {{ super() }}
 <script type="text/javascript">
-    $('.change_image_btn input').change(function(){
-        var input = $(this);
-        var files=input.prop('files');
-        if (files.length > 0){
-            input.attr('disabled','disabled');
-            var file = files[0];
-            var form_data = new FormData();
-            form_data.append('file', file);
-            $.ajax({
-                url:"/profile_image",
-                type:'POST',
-                data: form_data,
-                cache:false,
-                processData:false,
-                contentType:false,
-                dataType: 'json',
-                success:function(Data){
-                    if (Data.code==0){
-                        location.reload();
-                    }else{
-                        alert(Data.msg);
-                    }
-                },
-                error:function(){
-                  alert("upload error");
-                },
-                finally:function(){
-                    input.removeAttr('disabled');
-                }
-            });
-        };
-    });
-
 function change_status(item_sn, status){
     $.ajax({
         url:"/item/"+item_sn+'/status/'+status,
@@ -169,4 +99,3 @@ function change_status(item_sn, status){
 }
 </script>
 {% endblock js %}
-{% endblock body %}

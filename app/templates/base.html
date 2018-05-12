@@ -77,7 +77,7 @@
             {%if current_user and current_user.is_authenticated%}
                 <!-- <li><span>欢迎 {{current_user.account}}</span></li> -->
                 <p class="navbar-text">欢迎 {{current_user.account}}</p>
-                <li><a href="/my_home">个人中心</a></li>
+                <li><a href="/page/home">个人中心</a></li>
                 <li><a href="/logout">注销</a></li>
             {%else%}
                 <li><a href="/login">登录</a></li>
@@ -87,20 +87,11 @@
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
-    {% block body %}
-    {% block content %}
-    {% endblock content %}
-    
-    {% block js %}
-    <script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf-8">
-        $('.navbar-nav li').click(function(event){
-            $(this).attr('class', 'active').siblings().removeAttr('class');
-        });
-    </script>
-    {% endblock js %}
-    {% endblock body %}
+
+    <div class="body_container">
+    {% block body %}{% endblock body %}
+    </div>
+
     <div class="foot">
         <div class="idle-footer-links-box">
             <a href="#nogo" target="_self" class="idle-footer-link-auth">卖家实名认证</a>
@@ -113,5 +104,14 @@
         </div>
     </div>
     
+    <script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        $('.navbar-nav li').click(function(event){
+            $(this).attr('class', 'active').siblings().removeAttr('class');
+        });
+        $('.body_container').css('margin-top',($('.navbar').height()+10)+'px')
+    </script>
+    {% block js %}{% endblock js %}
 </body>
 </html>

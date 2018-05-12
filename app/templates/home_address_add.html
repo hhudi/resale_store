@@ -1,0 +1,52 @@
+{% extends "home_base.html" %}
+{% block title %}个人中心{% endblock title %}
+{% block css %}
+{{ super() }}
+<style type="text/css">
+
+</style>
+{% endblock css %}
+
+{% block home_right_container %}
+<div><button>添加收货地址</button></div>
+
+<div class="address_list">
+    {% if addresss %}
+        {% for ad in addresss%}
+            <div>
+                <p>地址：{{ad.address}}</p>
+                <p>联系人：{{ad.people}}</p>
+                <p>手机：{{ad.mobile}}</p>
+                <button class="del_address_btn" onclick="del_address('{{ad.sn}}')">删除</button>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div style="text-align: center;">没有收货地址</div>
+    {% endif %}
+</div>
+
+{% endblock home_right_container %}
+
+{% block js %}
+{{ super() }}
+<script type="text/javascript">
+function del_address(address_sn){
+    $.ajax({
+        url:"/address/"+address_sn,
+        type:'DELETE',
+        dataType: 'json',
+        success:function(Data){
+            console.log(Data);
+            if (Data.code==0){
+                location.reload();
+            }else{
+                alert(Data.msg);
+            }
+        },
+        error:function(){
+          alert("delete address error");
+        }
+    });
+}
+</script>
+{% endblock js %}

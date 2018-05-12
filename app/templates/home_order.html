@@ -1,0 +1,58 @@
+{% extends "home_base.html" %}
+{% block title %}我的订单{% endblock title %}
+{% block css %}
+{{ super() }}
+<style type="text/css">
+.order_list > div{
+        margin: 20px;
+        padding: 10px 20px;
+        font-size: 1.8rem;
+        border: 1px solid #eee;
+}
+</style>
+{% endblock css %}
+
+{% block home_right_container %}
+<div class="order_list">
+    {% if orders %}
+        {% for order in orders%}
+            <div onclick="location.href='/page/order/{{order.sn}}'">
+                <p>订单状态：{{['未支付','已支付'][order.status]}}</p>
+                <p>商品：{{order.item_name}}</p>
+                <p>价格：{{order.item_price}}</p>
+
+                <p>地址：{{order.address}}</p>
+                <p>联系人：{{order.people}}</p>
+                <p>手机：{{order.mobile}}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div style="text-align: center;">没有订单</div>
+    {% endif %}
+</div>
+
+{% endblock home_right_container %}
+
+{% block js %}
+{{ super() }}
+<script type="text/javascript">
+function del_address(address_sn){
+    $.ajax({
+        url:"/address/"+address_sn,
+        type:'DELETE',
+        dataType: 'json',
+        success:function(Data){
+            console.log(Data);
+            if (Data.code==0){
+                location.reload();
+            }else{
+                alert(Data.msg);
+            }
+        },
+        error:function(){
+          alert("delete address error");
+        }
+    });
+}
+</script>
+{% endblock js %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}确认订单{% endblock title %}
+{% block css %}
+<style type="text/css">
+h4{
+background: #eee;
+padding: 5px 10px;
+}
+.order_info_div{
+    width: 80%;
+    margin: 0 auto;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 50px;
+}
+.item_div img{
+    width: 300px;
+    height: 300px;
+}
+.order_btn_div{
+    text-align: center;
+    margin: 20px;
+}
+</style>
+{% endblock css %}
+{% block body %}
+<div class="order_info_div">
+    <h4>收货信息</h4>
+    <div class="address_div">
+        <div>
+            <p><label>收件地址：</label>{{address.address}}</p>
+            <p><label>收件人：</label>{{address.people}}</p>
+            <p><label>联系电话：</label>{{address.mobile}}</p>
+        </div>
+    </div>
+    
+    <h4>商品信息</h4>
+    <div class="item_div">
+        <div>
+            <img src="/var/item_images/{{item.main_image}}">
+            <p><label>商品名称：</label>{{item.name}}</p>
+            <p><label>商品分类：</label>{{item.category}}</p>
+            <p><label>商品价格：</label>{{item.price}}</p>
+        </div>
+    </div>
+
+</div>
+<div class="order_btn_div">
+    <button onclick="confirm_order()">提交订单</button>
+    <button onclick="javascript:history.go(-1);">取消</button>
+</div>
+
+    
+{% endblock body %}
+
+
+{% block js %}
+<script type="text/javascript">
+    var address_sn = "{{address.sn}}";
+    var form_data = new FormData();
+    form_data.append('item_sn', '{{item.sn}}');
+    form_data.append('address_sn',address_sn);
+    function confirm_order(){
+         $.ajax({
+            url:"/order",
+            type:'POST',
+            data: form_data,
+            cache:false,
+            processData:false,
+            contentType:false,
+            dataType: 'json',
+            success:function(Data){
+                if (Data.code==0){
+                    location.href="/page/order/"+Data.order_sn;
+                }else{
+                    alert(Data.msg);
+                }
+            },
+            error:function(){
+              alert("confirm order error");
+            }
+        });
+    }
+</script>
+{% endblock js %}
