@@ -87,6 +87,7 @@ function upload_data(form_data, status, success_callback){
 function refresh_data(item_sn){
     if (item_sn == '' || item_sn == null){return;}
     $('.item_images_container').empty();
+    alert(item_sn);
     $.ajax({
         url:"/item/"+item_sn,
         type:'GET',

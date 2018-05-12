@@ -114,6 +114,13 @@ def init_api(app):
 
         return dumps({'code': 0, 'filename': file_name})
 
+    @app.route('/item/filter', methods=['GET'])
+    def filter_item():
+        condition = request.args.get('condition')
+        print(condition)
+        items = Item.query.filter(Item.name.like('%'+condition+'%')).all()
+        return render_template('category_items.html', items=items)
+
     # 商品详情
     @app.route('/item/<item_sn>', methods=['GET'])
     @login_required
@@ -131,14 +138,6 @@ def init_api(app):
         images = [{'filename': image.filename,'is_main': image.is_main} for image in item_images]
         # dumps({'code': 0, 'item': item_dict, 'images': images})
         return render_template('ditail_item.html', item=item_dict, images=images)
-
-    @app.route('/item/filter', methods=['GET'])
-    def filter_item():
-        condition = request.args.get('condition')
-        print(condition)
-        items = Item.query.filter(Item.name.like('%'+condition+'%')).all()
-        return render_template('category_items.html', items=items)
-
 
     @app.route('/item', methods=['POST'])
     @login_required
