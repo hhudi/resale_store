@@ -121,7 +121,6 @@ def init_api(app):
         items = Item.query.filter(Item.name.like('%'+condition+'%')).all()
         return render_template('category_items.html', items=items)
 
-    # 商品详情
     @app.route('/item/<item_sn>', methods=['GET'])
     @login_required
     def get_item_images(item_sn):
@@ -132,11 +131,28 @@ def init_api(app):
                     'price': item.price,
                     'category': item.category,
                     'describe': item.describe,
+                    'update_time': str(item.update_time)}
+
+        item_images = ItemImage.query.filter_by(item_sn=item_sn,deleted=False).all()
+        print(item_images)
+        images = [{'filename': image.filename,'is_main': image.is_main} for image in item_images]
+        return dumps({'code': 0, 'item': item_dict, 'images': images})
+
+    # 商品详情
+    @app.route('/page/item/<item_sn>', methods=['GET'])
+    def page_item(item_sn):
+        item = Item.query.filter_by(sn=item_sn).first()
+        if not item:
+            return dumps({'code': -1, 'msg': 'not find item'})
+        item_dict = {'name': item.name,
+                    'price': item.price,
+                    'category': item.category,
+                    'describe': item.describe,
                     'update_time': item.update_time}
 
         item_images = ItemImage.query.filter_by(item_sn=item_sn,deleted=False).all()
+        print(item_images)
         images = [{'filename': image.filename,'is_main': image.is_main} for image in item_images]
-        # dumps({'code': 0, 'item': item_dict, 'images': images})
         return render_template('ditail_item.html', item=item_dict, images=images)
 
     @app.route('/item', methods=['POST'])
@@ -148,6 +164,8 @@ def init_api(app):
         item_category = request.form['item_category']
         item_describe = request.form['item_describe']
         item_status = request.form['item_status']
+
+        item_price = int(item_price) if item_price else 0
 
         print(item_sn)
         if not item_sn:

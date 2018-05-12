@@ -87,7 +87,6 @@ function upload_data(form_data, status, success_callback){
 function refresh_data(item_sn){
     if (item_sn == '' || item_sn == null){return;}
     $('.item_images_container').empty();
-    alert(item_sn);
     $.ajax({
         url:"/item/"+item_sn,
         type:'GET',
@@ -102,7 +101,7 @@ function refresh_data(item_sn){
                 $('#item_price').val(item.price);
                 $('#item_category').val(item.category);
                 $('#item_describe').val(item.describe);
-
+                console.log(Data.images.length);
                 for (var i=0;i<Data.images.length;i++){
                     var f = Data.images[i];
                     console.log(f.is_main);

@@ -45,7 +45,7 @@
                     {% if dig_items %}
                         {% for item in dig_items %}
                         <li class="dig_item">
-                            <a href="/item/{{item.sn}}" title="查看详情">
+                            <a href="/page/item/{{item.sn}}" title="查看详情">
                                 <div class="item_pic">
                                     {%if item.main_image %}
                                         <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
@@ -75,7 +75,7 @@
                     {% if bk_items %}
                         {% for item in bk_items %}
                         <li class="bk_item">
-                            <a href="/item/{{item.sn}}" title="查看详情">
+                            <a href="/page/item/{{item.sn}}" title="查看详情">
                                 <div class="item_pic">
                                     {%if item.main_image %}
                                         <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
@@ -105,7 +105,7 @@
                     {% if oth_items %}
                         {% for item in oth_items %}
                         <li class="oth_item">
-                            <a href="/item/{{item.sn}}" title="查看详情">
+                            <a href="/page/item/{{item.sn}}" title="查看详情">
                                 <div class="item_pic">
                                     {%if item.main_image %}
                                         <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
