@@ -136,7 +136,7 @@ def init_api(app):
 
         print(address, people, mobile)
 
-        add = UserAddress(user_sn=current_user.sn, address=address, people=people, mobile=mobile)
+        add = UserAddress(sn=str(uuid4()).replace('-', ''),user_sn=current_user.sn, address=address, people=people, mobile=mobile)
         db.session.add(add)
         db.session.commit()
         return redirect(url_for('.page_address'))
@@ -193,10 +193,15 @@ def init_api(app):
         item_price = int(item_price) if item_price else 0
 
         print(item_sn)
+<<<<<<< HEAD
         if item_sn:
             item = Item(user_sn=current_user.sn, name=item_name, price=item_price, category=item_category, describe=item_describe)
             print(">>>>>>>")
             print(item)
+=======
+        if not item_sn:
+            item = Item(sn=str(uuid4()).replace('-', ''),user_sn=current_user.sn, name=item_name, price=item_price, category=item_category, describe=item_describe)
+>>>>>>> a2426ad5af5131ea9a062fca4431e5ab93c2e9ea
             db.session.add(item)
             db.session.commit()
             db.session.flush()
@@ -289,7 +294,8 @@ def init_api(app):
         if not address:
             return dumps({'code':-2, 'msg':'no address'})
 
-        order = ItemOrder(user_sn=current_user.sn, 
+        order = ItemOrder(sn=str(uuid4()).replace('-', ''),
+                        user_sn=current_user.sn, 
                         seller_sn=item.user_sn, 
                         item_sn=item.sn, 
                         item_name=item.name, 

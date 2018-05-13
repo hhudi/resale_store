@@ -1,6 +1,8 @@
 from app import db
 from app.models import User
 from werkzeug.security import generate_password_hash, check_password_hash
+from uuid import uuid4
+
 
 def validate_user(account, password):
     user = User.query.filter_by(account=account).first()
@@ -17,7 +19,7 @@ def register_user(account, password):
         return None
 
     password_hash = generate_password_hash(password)
-    user = User(account=account, password_hash=password_hash)
+    user = User(sn=str(uuid4()).replace('-', ''),account=account, password_hash=password_hash)
     db.session.add(user)
     db.session.commit()
     db.session.refresh(user)
