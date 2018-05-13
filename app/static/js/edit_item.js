@@ -4,7 +4,7 @@ var url_sn = new URL(document.URL).searchParams.get("sn");
 if (url_sn!=null){current_item_sn=url_sn}
 
 console.log(current_item_sn);
-refresh_data(current_item_sn);
+// refresh_data(current_item_sn);
 $('.save_btn').click(function(){
     var upload_success_callback=function(){
         alert('保存成功');
@@ -26,6 +26,7 @@ $('.cancel_publish_btn').click(function(){
 
 $('.add_image_btn input').change(function(){
     var form_data = get_form_data();
+    console.log(form_data);
     var files=$(this).prop('files');
     if (files.length > 0){
         var file = files[0];
@@ -40,13 +41,14 @@ $('.add_image_btn input').change(function(){
 function get_form_data(){
     
     if($('#item_name').val() != null && $('#item_price').val()!=null && $('#item_describe').val()!=null){
-        console.log($('#item_category').val());
         var form_data = new FormData();
         form_data.append('item_sn', current_item_sn);
         form_data.append('item_name', $('#item_name').val());
         form_data.append('item_price', $('#item_price').val());
         form_data.append('item_category', $('#item_category').val());
         form_data.append('item_describe', $('#item_describe').val());
+        console.log($('#item_category').val());
+        console.log(form_data);
         return form_data;
     }else{
         alert('请填入完整信息');
@@ -66,11 +68,11 @@ function upload_data(form_data, status, success_callback){
             contentType:false,
             dataType: 'json',
             success:function(Data){
-                console.log(Data);
                 if (Data.code==0){
                     current_item_sn = Data.item_sn;
+                    console.log(current_item_sn);
                     refresh_data(Data.item_sn);
-                    success_callback();
+                    // success_callback();
                 }else{
                     alert(Data.msg);
                 }
@@ -110,14 +112,16 @@ function refresh_data(item_sn){
                     if (f.is_main) {
                         class_name="item_image_div_main";
                     }
+                    console.log(f);
                     $('.item_images_container').append('<div class="item_image_div '+class_name+'"><img src="'+path+'"/><div><div onclick="set_main_image(\''+f.filename+'\')">设为主图</div><div onclick="delete_image(\''+f.filename+'\')">删除</div></div></div>');
                 }
+                
                 if(Data.images.length==0){
                     $('.item_images_container').append('请添加图片');
                 }
             }else{
                 alert(Data.msg);
-                location.href="/my_home";
+                location.href="/page/home";
             }
         },
         error:function(data){

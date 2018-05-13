@@ -17,20 +17,14 @@
 
 
 
-
-
-
-
-
-
-
-
-
 .add_image_btn{
     position: relative;
     overflow: hidden;
 }
 .add_image_btn input{
+    display: inline-block;
+    height: 100%;
+    width: 100%;
     position: absolute;
     top: 0;
     left: 0;

@@ -37,7 +37,12 @@ padding: 5px 10px;
     <h4>商品信息</h4>
     <div class="item_div">
         <div>
+            {% if item.main_image %}
+            
             <img src="/var/item_images/{{item.main_image}}">
+            {% else %}
+            <img src="{{ url_for('static', filename='item_images/{{item.main_image}}') }}">
+            {% endif %}
             <p><label>商品名称：</label>{{item.name}}</p>
             <p><label>商品分类：</label>{{item.category}}</p>
             <p><label>商品价格：</label>{{item.price}}</p>
@@ -55,6 +60,7 @@ padding: 5px 10px;
 
 
 {% block js %}
+{{ super() }}
 <script type="text/javascript">
     var address_sn = "{{address.sn}}";
     var form_data = new FormData();
@@ -71,6 +77,7 @@ padding: 5px 10px;
             dataType: 'json',
             success:function(Data){
                 if (Data.code==0){
+                    alert(1);
                     location.href="/page/order/"+Data.order_sn;
                 }else{
                     alert(Data.msg);

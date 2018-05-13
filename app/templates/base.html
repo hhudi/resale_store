@@ -104,14 +104,17 @@
         </div>
     </div>
     
-    <script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf-8">
-        $('.navbar-nav li').click(function(event){
-            $(this).attr('class', 'active').siblings().removeAttr('class');
-        });
-        $('.body_container').css('margin-top',($('.navbar').height()+10)+'px')
-    </script>
-    {% block js %}{% endblock js %}
+    
+    
+    {% block js %}
+        <script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
+        <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script type="text/javascript" charset="utf-8">
+            $('.navbar-nav li').click(function(event){
+                $(this).attr('class', 'active').siblings().removeAttr('class');
+            });
+            $('.body_container').css('margin-top',($('.navbar').height()+10)+'px')
+        </script>
+    {% endblock js %}
 </body>
 </html>

@@ -42,6 +42,7 @@
 
 
 {% block js %}
+{{ super() }}
 <script type="text/javascript">
     function pay_order(order_sn){
          $.ajax({

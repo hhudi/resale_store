@@ -65,6 +65,6 @@
 </div>
 {% block js %}
         {{ super() }}
-<script type="text/javascript" src="/static/js/edit_item.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/edit_item.js') }}"></script>
 {% endblock js %}
 {% endblock body %}
