@@ -14,31 +14,38 @@ $('.save_btn').click(function(){
 $('.publish_btn').click(function(){
     var upload_success_callback=function(){
         alert('发布成功');
+        console.log('...')
+        window.location.href = "/page/home";
     };
     upload_data(get_form_data(), 1, upload_success_callback);
 });
 $('.cancel_publish_btn').click(function(){
-    var upload_success_callback=function(){
-        alert('已取消发布');
-    };
-    upload_data(get_form_data(), 0, upload_success_callback);
+    
+    alert('已取消发布');
+    window.location.href = '/page/home';
+    // upload_data(get_form_data(), 0, upload_success_callback);
 });
 
 $('.add_image_btn input').change(function(){
-    var form_data = get_form_data();
-    var files=$(this).prop('files');
-    if (files.length > 0){
-        var file = files[0];
-        for (i = 0; i < files.length; i++) {
-            form_data.append('file_' + i, files[i]);
-        }
-    };
-    console.log(form_data);
-    upload_data(form_data, 0, function(){});
+    var item_name = $('#item_name').val();
+    console.log(item_name);
+    if(item_name == ''){
+        alert("请先录入商品文字信息");
+        $('#item_name').focus();
+    }else{
+        var form_data = get_form_data();
+        var files=$(this).prop('files');
+        if (files.length > 0){
+            var file = files[0];
+            for (i = 0; i < files.length; i++) {
+                form_data.append('file_' + i, files[i]);
+            }
+        };
+        upload_data(form_data, 0, function(){});
+    }
 });
 
 function get_form_data(){
-    
     if($('#item_name').val() != null && $('#item_price').val()!=null && $('#item_describe').val()!=null){
         console.log($('#item_category').val());
         var form_data = new FormData();
@@ -51,7 +58,6 @@ function get_form_data(){
     }else{
         alert('请填入完整信息');
     }
-    
 }
 
 function upload_data(form_data, status, success_callback){
@@ -66,7 +72,6 @@ function upload_data(form_data, status, success_callback){
             contentType:false,
             dataType: 'json',
             success:function(Data){
-                console.log(Data);
                 if (Data.code==0){
                     current_item_sn = Data.item_sn;
                     refresh_data(Data.item_sn);
@@ -102,6 +107,7 @@ function refresh_data(item_sn){
                 $('#item_category').val(item.category);
                 $('#item_describe').val(item.describe);
                 console.log(Data.images.length);
+                $('.item_images_container').empty();
                 for (var i=0;i<Data.images.length;i++){
                     var f = Data.images[i];
                     console.log(f.is_main);
@@ -110,6 +116,7 @@ function refresh_data(item_sn){
                     if (f.is_main) {
                         class_name="item_image_div_main";
                     }
+                    console.log(f);
                     $('.item_images_container').append('<div class="item_image_div '+class_name+'"><img src="'+path+'"/><div><div onclick="set_main_image(\''+f.filename+'\')">设为主图</div><div onclick="delete_image(\''+f.filename+'\')">删除</div></div></div>');
                 }
                 if(Data.images.length==0){

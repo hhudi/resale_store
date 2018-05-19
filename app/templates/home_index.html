@@ -19,17 +19,23 @@
     }
     .item_list_div > div:nth-child(2){
     }
-    .item_list_div > div:nth-child(3){
+    .item_list_div .option_div{
         float: right;
-        width: 10%;
+        width: 30%;
         text-align: center;
         line-height: 100%;
+    }
+    .option_div .btn{
+        margin-top: 70px;
     }
     .item_main_image{
         width: 100px;
         height: 100px;
         background: #eee;
         border: none;
+    }
+    .item_img_div:hover{
+        transform: scale(1.2);
     }
 </style>
 {% endblock css %}
@@ -39,32 +45,32 @@
     {% if items%}
         {%for item in items%}
         <div class="item_list_div">
-            <div>
+            <div class="item_img_div">
+                <input type="hidden" class="item_sn_hidden" name="item_sn_hidden" value="{{ item.sn }}">
                 {%if item.main_image %}
                     <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
                 {%else%}
-                    <img class="item_main_image">
+                    <img class="item_main_image" src="{{ url_for('static', filename='img/store_icon.png') }}">
                 {%endif%}
             </div>
             <div>
-                <div>{{item.name}}</div>
-                <div>{{item.describe}}</div>
-            {{['未发布', '已发布', '锁定中', '已卖出', '已删除'][item.status]}}
+                <div>商品名： {{item.name}}</div>
+                <div>商品描述： {{item.describe}}</div>
+                发布状态： {{['未发布', '已发布', '锁定中', '已卖出', '已删除'][item.status]}}
             </div>
-            <div>
+            <div class="option_div">
                 {%if item.status==0 %}
-                    <button onclick="window.location.href='/page/edit_item?sn={{item.sn}}'">修改</button>
-                    <button onclick="change_status('{{item.sn}}', 1)">发布</button>
-                    <button onclick="change_status('{{item.sn}}', 4)">删除</button>
+                    <button class="btn btn-info" onclick="window.location.href='/page/edit_item?sn={{item.sn}}'">修改</button>
+                    <button class="btn btn-info" onclick="change_status('{{item.sn}}', 1)">发布</button>
+                    <button class="btn btn-danger" onclick="change_status('{{item.sn}}', 4)">删除</button>
                 {%elif item.status==1 %}
-                    <button onclick="change_status('{{item.sn}}', 0)">取消发布</button>
-                    <button onclick="change_status('{{item.sn}}', 4)">删除</button>
+                    <button class="btn btn-info" onclick="change_status('{{item.sn}}', 0)">取消发布</button>
+                    <button class="btn btn-danger" onclick="change_status('{{item.sn}}', 4)">删除</button>
                 {%elif item.status==2 %}
-                    <button onclick="window.location.href='/page/edit_item?sn={{item.sn}}'">查看</button>
+                    <button class="btn btn-info" onclick="window.location.href='/page/edit_item?sn={{item.sn}}'">查看</button>
                 {%elif item.status==3 %}
-                    <button onclick="window.location.href='/page/edit_item?sn={{item.sn}}'">查看</button>
-                    <button onclick="change_status('{{item.sn}}', 0)">取消发布</button>
-                    <button onclick="change_status('{{item.sn}}', 4)">删除</button>
+                    <button class="btn btn-info" onclick="window.location.href='/page/edit_item?sn={{item.sn}}'">查看</button>
+                    <button class="btn btn-danger" onclick="change_status('{{item.sn}}', 4)">删除</button>
                 {%endif%}
             </div>
         </div>
@@ -97,5 +103,11 @@ function change_status(item_sn, status){
         }
     });
 }
+$('.item_img_div').click(function(event){
+    event.preventDefault();
+    var item_sn = $(this).children().eq(0).val();
+    
+    window.location.href = '/page/edit_item?sn='+item_sn;
+});
 </script>
 {% endblock js %}

@@ -7,6 +7,7 @@ $(function(){
             el: '.swiper-pagination',
             clickable :true,
         },
+        autoplay: true
     }); 
     /*for(var i=0;i<$('.digital_item_list').children().length; i++){
         if($('.digital_item_list').children().length > 4){

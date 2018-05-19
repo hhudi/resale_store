@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% block title %}书籍{% endblock title %}
+{% block title %}商品详情{% endblock title %}
 {% block css %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='lib/swiper-4.2.2.min.css') }}">
 <style type="text/css">
     .header{
         width: 90%;
@@ -102,14 +102,19 @@
     <div class="header">
         <div class="user_div">
             {%if current_user.profile_image %}
-            <img class="profile_image" src="/var/profile_images/{{current_user.profile_image}}">
-            {%else%}
-            <img class="profile_image" src="/var/profile_images/default_profile_image.jpg">
-            {%endif%}
+            <img class="profile_image" src="/var/profile_images/{{ current_user.profile_image}}">
             <div class="simple">
                 <p>{{ current_user.account }}</p>
                 <p>注册于:{{ current_user.created_time }}</p>
             </div>
+            {%else%}
+            <img class="profile_image" src="/var/profile_images/default_profile_image.jpg">
+            <div class="simple">
+                <p> -- </p>
+                <p>用户暂未注册</p>
+            </div>
+            {%endif%}
+            
         </div>
     </div>
     <div class="content">
@@ -145,7 +150,15 @@
             <p>如遇到以下情况可能是诈骗行为： <b style="color: #f60;">1.宝贝价格异常低；2.卖家要求QQ沟通；3.卖家要求直接汇款。</b></p>
             <hr>
             <div class="desc_info_simple">
-                <p><span>宝贝类别：</span><span>{{item.category}}</span></p>
+                {% if item.category ==0 %}
+                <p><span>宝贝类别：</span><span>数码/digital</span></p>
+                {% elif item.category ==1%}
+                <p><span>宝贝类别：</span><span>书籍/book</span></p>
+                {% elif item.category ==2%}
+                <p><span>宝贝类别：</span><span>其他/other</span></p>
+                {% else %}
+                <p><span>宝贝类别：</span><span>未知分类</span></p>
+                {% endif %}
                 <p><span>卖家留言：</span><span>{{item.describe}}</span></p>
             </div>
         </div>
@@ -159,7 +172,7 @@
 
     {% block js %}
         {{ super() }}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
+    <script src="{{ url_for('static', filename='lib/swiper-4.2.2.min.js') }}"></script>
     <script>
         $('html').height($('body').height());
         var mySwiper = new Swiper ('.swiper-container', {

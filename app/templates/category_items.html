@@ -11,7 +11,7 @@
         width: 820px;margin: 0 auto;
         overflow: hidden;
     }
-    .dig_item{
+    .cate_item{
         list-style: none;
         float: left;
         margin: 0 5px 22px 0px;
@@ -60,7 +60,7 @@
                 {% if items %}
                     {% for item in items %}
                     <li class="cate_item">
-                        <a href="/item/{{item.sn}}" title="查看详情">
+                        <a href="/page/item/{{item.sn}}" title="查看详情">
                             <div class="item_pic">
                                 {%if item.main_image %}
                                     <img class="item_main_image" src="/var/item_images/{{item.main_image}}">

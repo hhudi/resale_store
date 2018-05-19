@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'home_base.html' %}
 {% block title %}订单支付{% endblock title %}
 {% block css %}
 <style type="text/css">
@@ -16,32 +16,36 @@
 </style>
 {% endblock css %}
 {% block body %}
-<div class="order_info_div">
-        <p><label>订单状态：</label>{{['未支付','已支付'][order.status]}}</p>
-    <div>
-        <h4>您需支付<b>{{order.item_price}}</b>元</h4>
+    <div class="order_info_div">
+        <p><label>订单状态：</label>&nbsp;&nbsp;{{['未支付','已支付'][order.status]}}</p>
+        <div>
+            {% if order.status == 0 %}
+            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您需支付<b style="color: red;">{{order.item_price}}</b>元</h4>
+            {% else %}
+            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您支付了<b style="color: red;">{{order.item_price}}</b>元</h4>
+            {% endif %}
+        </div>
+        <div>
+            <p><label>订单号：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>{{order.sn}}</p>
+            <p><label>下单时间：&nbsp;&nbsp;</label>{{order.created_time.strftime('%Y-%m-%d %H:%M:%S')}}</p>
+            <p><label>卖家ID：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>{{order.seller_sn}}</p>
+        </div>
     </div>
-    <div>
-        <p><label>订单号：</label>{{order.sn}}</p>
-        <p><label>下单时间：</label>{{order.created_time.strftime('%Y-%m-%d %H:%M:%S')}}</p>
-    <div>
-</div>
 
 
-<div class="order_btn_div">
-    {% if order.status==0 %}
-    <button onclick="pay_order('{{order.sn}}')">立即支付</button>
-    <button onclick="javascript:history.go(-1);">取消</button>
-    {% else %}
-    <button onclick="location.href='/page/orders'">我的订单</button>
-    {% endif %}
-</div>
-
-    
+    <div class="order_btn_div">
+        {% if order.status==0 %}
+        <button onclick="pay_order('{{order.sn}}')">立即支付</button>
+        <button onclick="javascript:history.go(-1);">取消</button>
+        {% else %}
+        <button onclick="location.href='/page/orders'">我的订单</button>
+        {% endif %}
+    </div>
 {% endblock body %}
 
 
 {% block js %}
+{{ super() }}
 <script type="text/javascript">
     function pay_order(order_sn){
          $.ajax({

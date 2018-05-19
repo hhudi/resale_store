@@ -21,23 +21,49 @@ padding: 5px 10px;
     text-align: center;
     margin: 20px;
 }
+.choose_add{
+    overflow: hidden;
+}
+.choose_add span{
+    margin-right: 15px;
+}
+.choose_add button{
+    float: right;
+}
 </style>
 {% endblock css %}
 {% block body %}
 <div class="order_info_div">
     <h4>收货信息</h4>
     <div class="address_div">
-        <div>
-            <p><label>收件地址：</label>{{address.address}}</p>
-            <p><label>收件人：</label>{{address.people}}</p>
-            <p><label>联系电话：</label>{{address.mobile}}</p>
+        {% if address%}
+        {% for add in address%}
+        <div class="choose_add">
+            <span>收件地址：<u>{{add.address}}</u></span><span>收件人：<u>{{add.people}}</u></span><span>联系方式：<u>{{add.mobile}}</u></span><input type="hidden" class="address_sn" name="address_sn" value="{{ add.sn}}">
+            <button type="button" class="btn btn-info btn_choose_add">选择地址</button>
+        </div>
+        {% endfor%}
+        {% else %}
+        <div class="no_address_div">
+            <p>暂无收货地址哦，<button>立即添加</button></p>
+        </div>
+        {% endif%}
+        <div class="selected_add">
+            <h4>已选择</h4>
+            <p>收件地址： <span class="s_address"></span></p>
+            <p>收件人 <span class="s_people"></span></p>
+            <p>联系方式： <span class="s_mobile"></span></p>
         </div>
     </div>
     
     <h4>商品信息</h4>
     <div class="item_div">
         <div>
+            {% if item.main_image %}
             <img src="/var/item_images/{{item.main_image}}">
+            {% else %}
+            <img src="{{ url_for('static', filename='img/store_icon.png') }}" alt="">
+            {% endif %}
             <p><label>商品名称：</label>{{item.name}}</p>
             <p><label>商品分类：</label>{{item.category}}</p>
             <p><label>商品价格：</label>{{item.price}}</p>
@@ -55,13 +81,25 @@ padding: 5px 10px;
 
 
 {% block js %}
+{{ super() }}
 <script type="text/javascript">
-    var address_sn = "{{address.sn}}";
     var form_data = new FormData();
     form_data.append('item_sn', '{{item.sn}}');
-    form_data.append('address_sn',address_sn);
+    $('.btn_choose_add').click(function(e){
+        var add_sn = $(this).siblings().filter($('.address_sn')).val();
+        var s_addr = $(this).siblings().children().eq(0).text();
+        var s_peo = $(this).siblings().children().eq(1).text();
+        var s_mob = $(this).siblings().children().eq(2).text();
+        $('.s_address').text(s_addr);
+        $('.s_people').text(s_peo);
+        $('.s_mobile').text(s_mob);
+        form_data.append('address_sn',add_sn);
+    });
+    
+    
+    
     function confirm_order(){
-         $.ajax({
+        $.ajax({
             url:"/order",
             type:'POST',
             data: form_data,
@@ -81,5 +119,6 @@ padding: 5px 10px;
             }
         });
     }
+    
 </script>
 {% endblock js %}

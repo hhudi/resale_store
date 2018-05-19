@@ -2,13 +2,24 @@
 {% block title %}注册{% endblock title %}
 {% block css %}
 <style type="text/css">
+    .bg{
+        width: 100%;
+        height: 100%;
+        padding-top: 100px;
+        background: url('{{ url_for('static', filename='img/login_bg.jpg') }}') no-repeat 50% 50%;
+    }
     .register_div{
         width: 550px;
-        margin: 100px auto;
-        padding: 50px;
+        margin: 0 auto 100px 60%;
+        padding: 20px;
         text-align: center;
-        border: 1px solid #eee;
-        line-height: 50px;
+        border: 1px solid #935d5d;
+        border-radius: 20px;
+        background: #efefef;
+        animation-name: login_animate;
+        animation-duration: 1s;
+        animation-timing-function: ease-in;
+        animation-iteration-count: 1;
     }
     .center-block {
       display: block;
@@ -21,32 +32,111 @@
     .profile_image{
         height: 100%;
     }
+    .btn-reg{
+        margin-left: 30px;
+        width: 80px;
+        height: 100%;
+    }
+    .btn-reset{
+        margin-left: 60%;
+        width: 80px;
+        height: 100%;
+    }
+    .form_div{
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        margin: 10px auto;
+        text-align: left;
+        overflow: hidden;
+    }
+    .form_div>span{
+        display: inline-block;
+        width: 23%;
+        height: 100%;
+        padding: 0px 10px;
+        background: #fff;
+        float: left;
+        border-radius: 5px;
+    }
+    .form_div>span b{
+        color: red;
+    }
+    .form_div>input{
+        width: 75%;
+        height: 100%;
+        float: right;
+        border-radius: 4px;
+        border: none;
+        padding-left: 10px;
+    }
+    @keyframes login_animate{
+        0%{
+            margin-left: 100%;
+        }
+        80%{
+            margin-left: 60%;
+        }
+        94%{
+            margin-left: 65%;
+        }
+        100%{
+            margin-left: 60%;
+        }
+    }
 </style>
 {% endblock css %}
 {% block body %}
-<div class="register_div">
-    <div class="profile_image_div">
-        <img class="img-circle profile_image center-block" src="/var/profile_images/default_profile_image.jpg"></img>
-    </div>
-    <form method="post" url="/register" class="form-horizontal">
-        <div class="form-group">
-            <label for="account" class="col-sm-2 control-label">账号：</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="account" name="account" placeholder="请输入账号">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="password" class="col-sm-2 control-label">Password</label>
-            <div class="col-sm-10">
-              <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-info btn-login">注册</button>
-            </div>
-        </div>
 
-    </form>
+<div class="bg">
+    <div class="register_div">
+        <div class="profile_image_div">
+            <img class="img-circle profile_image center-block" src="/var/profile_images/default_profile_image.jpg"></img>
+        </div>
+        <form method="post" url="/register" class="form-horizontal">
+            <div class="reg_name_div form_div">
+                <span><b>*</b>&nbsp;账&nbsp;&nbsp;号：</span>
+                <input type="text" class="reg_account" id="account" name="account" placeholder="请输入学号" required="">
+            </div>
+            <div class="reg_pwd_div form_div">
+                <span><b>*</b>&nbsp;密&nbsp;&nbsp;码：</span>
+                <input type="password" class="reg_password" id="password" name="password" placeholder="请输入密码" required="">
+            </div>
+            <div class="reg_repwd_div form_div">
+                <span><b>*</b>&nbsp;确认密码：</span>
+                <input type="password" class="reg_repassword" id="repassword" name="repassword" placeholder="请确认密码" required="">
+            </div>
+            <div class="reg_repwd_div form_div">
+                <span><b>*</b>&nbsp;联系电话：</span>
+                <input type="text" class="reg_telephone" id="telephone" name="telephone" placeholder="请输入联系电话" required="">
+            </div>
+            <div class="form_div">
+                <button type="submit" class="btn btn-info btn-reg">注册</button>
+                <button type="reset" class="btn btn-info btn-reset">取消</button>
+            </div>
+
+        </form>
+    </div>
 </div>
 {% endblock body %}
+{% block js%}
+{{ super() }}
+<script>
+    $('#repassword').change(function(e){
+        var password = $('#password').val();
+        var repassword = $('#repassword').val();
+        if(password != repassword){
+            alert('两次输入密码不一致');
+            $('#repassword').focus();
+        }
+    });
+    $('#telephone').blur(function(e){
+        var val = $(this).val();
+        if(/\d{11}/.test(val)){
+            return
+        }else{
+            alert('电话号码输入有误！');
+        }
+    });
+</script>
+{% endblock js%}

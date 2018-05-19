@@ -10,8 +10,8 @@ def validate_user(account, password):
         return None
     return user
 
-def register_user(account, password):
-    if not account or not password:
+def register_user(account, password, telephone):
+    if not account or not password or not telephone:
         return None
 
     user = User.query.filter_by(account=account).first()
@@ -19,7 +19,7 @@ def register_user(account, password):
         return None
 
     password_hash = generate_password_hash(password)
-    user = User(sn=str(uuid4()).replace('-', ''),account=account, password_hash=password_hash)
+    user = User(sn=str(uuid4()).replace('-', ''),account=account, password_hash=password_hash, telephone=telephone)
     db.session.add(user)
     db.session.commit()
     db.session.refresh(user)

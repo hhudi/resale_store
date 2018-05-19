@@ -6,6 +6,9 @@
 {% endblock css %}
 {% block body %}
     {% block content %}
+    <div class="text-scroll">
+            <marquee behavior="alternate" direction="right" loop="infinite" scrollamount="10"><i>校内二手购</i></marquee>
+        </div>
     <div class="main_content">
         <div class="main">
             <!-- <div class="left_category main_item">
@@ -17,6 +20,9 @@
               <li class="list-group-item category_btn digital_btn" onclick="window.location.href='/category_items?category=0'">闲置数码</li>
               <li class="list-group-item category_btn book_btn" onclick="window.location.href='/category_items?category=1'">闲置书籍</li>
               <li class="list-group-item category_btn others_btn" onclick="window.location.href='/category_items?category=2'">其它</li>
+              <li class="list-group-item category_btn others_btn" onclick="window.location.href='/category_items?category=3'">化妆品</li>
+              <li class="list-group-item category_btn others_btn" onclick="window.location.href='/category_items?category=4'">外设</li>
+              <li class="list-group-item category_btn others_btn" onclick="window.location.href='/category_items?category=5'">出行工具</li>
             </ul>
             <div class="middle_swiper main_item">
                 <div class="swiper-container">
@@ -31,6 +37,9 @@
                 <div class="mod_release_btn">
                     <span class="main-title">立即发布</span>
                     <span class="subtitle">发布闲置 快速出手</span>
+                </div>
+                <div class="mod_static_img">
+                    <img src="{{ url_for('static', filename='img/model_mobile.jpg') }}" alt="">
                 </div>
             </div>
         </div>
@@ -124,6 +133,103 @@
                         <div>还没有人发布商品~~~</div>
                     {%endif%}
                 </ul>
+            </div>
+
+            <div class="cosmetic_item">
+                <div class="title_cosmetic category_title">
+                    <h3>小姐姐们的最爱--</h3>
+                    <hr>
+                </div>
+                <ul class="cosmetic_item_list cate_item_list">
+                    {% if oth_items %}
+                        {% for item in cosmetic_items %}
+                        <li class="cos_item">
+                            <a href="/page/item/{{item.sn}}" title="查看详情">
+                                <div class="item_pic">
+                                    {%if item.main_image %}
+                                        <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
+                                    {%else%}
+                                        <img class="item_default_image" src="{{ url_for('static', filename='img/store_icon.png') }}">
+                                    {%endif%}
+                                </div>
+                            </a>
+                            <p class="item_title">{{ item.name }}</p>
+                            <div class="price_item">
+                                <p><span class="glyphicon glyphicon-yen"></span>{{ item.price }}</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    {%else%}
+                        <div>还没有人发布商品~~~</div>
+                    {%endif%}
+                </ul>
+            </div>
+
+            <div class="peripherals_item">
+                <div class="title_peripherals category_title">
+                    <h3>小哥哥们的最爱--</h3>
+                    <hr>
+                </div>
+                <ul class="peripherals_item_list cate_item_list">
+                    {% if oth_items %}
+                        {% for item in peripherals_items %}
+                        <li class="peri_item">
+                            <a href="/page/item/{{item.sn}}" title="查看详情">
+                                <div class="item_pic">
+                                    {%if item.main_image %}
+                                        <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
+                                    {%else%}
+                                        <img class="item_default_image" src="{{ url_for('static', filename='img/store_icon.png') }}">
+                                    {%endif%}
+                                </div>
+                            </a>
+                            <p class="item_title">{{ item.name }}</p>
+                            <div class="price_item">
+                                <p><span class="glyphicon glyphicon-yen"></span>{{ item.price }}</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    {%else%}
+                        <div>还没有人发布商品~~~</div>
+                    {%endif%}
+                </ul>
+            </div>
+
+            <div class="travel_item">
+                <div class="title_travel category_title">
+                    <h3>出行必备哦--</h3>
+                    <hr>
+                </div>
+                <ul class="travel_item_list cate_item_list">
+                    {% if oth_items %}
+                        {% for item in travel_items %}
+                        <li class="tra_item">
+                            <a href="/page/item/{{item.sn}}" title="查看详情">
+                                <div class="item_pic">
+                                    {%if item.main_image %}
+                                        <img class="item_main_image" src="/var/item_images/{{item.main_image}}">
+                                    {%else%}
+                                        <img class="item_default_image" src="{{ url_for('static', filename='img/store_icon.png') }}">
+                                    {%endif%}
+                                </div>
+                            </a>
+                            <p class="item_title">{{ item.name }}</p>
+                            <div class="price_item">
+                                <p><span class="glyphicon glyphicon-yen"></span>{{ item.price }}</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    {%else%}
+                        <div>还没有人发布商品~~~</div>
+                    {%endif%}
+                </ul>
+            </div>
+        </div>
+
+        <div class="adviss_btn">
+            <div class="mod_release_btn">
+                <span class="main-title">一键换钱 ></span>
+                <span class="subtitle">发布闲置 快速出手</span>
             </div>
         </div>
     </div>

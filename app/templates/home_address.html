@@ -1,10 +1,8 @@
 {% extends "home_base.html" %}
-{% block title %}个人中心{% endblock title %}
+{% block title %}个人中心-地址管理{% endblock title %}
 {% block css %}
 {{ super() }}
 <style type="text/css">
-.address_list{
-}
 .address_list > div{
         background: #eee;
         margin: 20px;
@@ -14,45 +12,68 @@
 .add_address_dialog{
     display: none;
     position: fixed;
-    width: 80%;
+    width: 500px;
     height: 300px;
-    top: 20%;
-    left: 10%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background: #fff;
     box-shadow: 10px 10px 10px #666;
     z-index: 9999;
-    padding: 20px;
-    margin: 20px;
+    padding: 0 20px;
 }
+.form_add_div div{
+    margin-top: 20px;
+}
+.form_add_div div span{
+    display: inline-block;
+    width: 20%;
+    float: left;
+}
+.form_add_div div input{
+    width: 75%;
+}
+.form_add_div div input[type=radio]{
+    width: 10%;
+}
+
 </style>
 {% endblock css %}
 
 {% block home_right_container %}
-<div style="text-align: center;"><button onclick="show_add_dialog()">添加收货地址</button></div>
-
 <div class="address_list">
     {% if addresss %}
         {% for ad in addresss%}
-            <div>
-                <p>地址：{{ad.address}}</p>
-                <p>联系人：{{ad.people}}</p>
-                <p>手机：{{ad.mobile}}</p>
-                <button class="del_address_btn" onclick="del_address('{{ad.sn}}')">删除</button>
-            </div>
+        <div>
+            <p>地址：{{ad.address}}</p>
+            <p>
+                <span class="people">联系人：{{ad.people}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="tel">手机：{{ad.mobile}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="is_del">是否默认：{{ad.is_default}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button style="float: right;" class="update_address_btn btn btn-danger" onclick="alert("功能尚未完成，敬请期待")">设为默认</button>
+                <button style="float: right;" class="del_address_btn btn btn-danger" onclick="del_address('{{ad.sn}}')">删除</button>
+            </p>
+        </div>
         {% endfor %}
+        <p style="text-align: right;margin-right: 20px;"><button class="btn btn-default" onclick="show_add_dialog()">再次添加</button></p>
     {% else %}
-        <div style="text-align: center;">没有收货地址</div>
+        <div style="text-align: center;">还没有收货地址哦～～，现在<button class="btn btn-default" onclick="show_add_dialog()">去添加</button></div>
     {% endif %}
 </div>
 
 <div class="add_address_dialog">
-    <div style="text-align: right;"><button  onclick="close_add_dialog()">关闭</button></div>
+    <div style="text-align: right;"><button class="btn btn-info" onclick="close_add_dialog()">关闭</button></div>
     <div style="text-align: center;">
-        <form action="/address" method="POST" onsubmit="return vaild_address_form()">
-            <div><input type="address" name="address" placeholder="address"></div>
-            <div><input type="people" name="people" placeholder="people"></div>
-            <div><input type="mobile" name="mobile" placeholder="mobile"></div>
-            <div><button>保存</button></div>
+        <form class="form_add_div" action="/address" method="POST" onsubmit="return vaild_address_form()">
+            <div><span>收件地址：</span><input class="form-control" type="text" name="address" placeholder="address"></div>
+            <div><span>收件人：</span><input class="form-control" type="text" name="people" placeholder="people"></div>
+            <div><span>联系方式：</span><input class="form-control" type="tel" name="mobile" placeholder="mobile"></div>
+            <div>
+                <span>是否默认：</span>
+                是<input id="is_def" type="radio" name="is_default" value="1">
+                否<input id="not_def" type="radio" name="is_default" value="0">
+            </div>
+            <div><button class="btn btn-info">保存</button></div>
         </form>
     </div>
 </div>

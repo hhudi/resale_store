@@ -14,7 +14,7 @@
             display: inline;
         }
         .foot{
-            margin-top: 300px;
+            margin-top: 100px;
             width: 100%;
             min-width: 1040px;
             background: #000;
@@ -35,6 +35,10 @@
         }
         a.idle-footer-link-auth{
             margin-left: 0px;
+        }
+        .body_container{
+            background: #f1f1f1;
+            overflow: hidden;
         }
         .address{
             width: 100%;
@@ -66,6 +70,9 @@
             <li><a href="/category_items?category=0">闲置数码</a></li>
             <li><a href="/category_items?category=1">闲置书籍</a></li>
             <li><a href="/category_items?category=2">其它</a></li>
+            <li><a href="/category_items?category=3">化妆品</a></li>
+            <li><a href="/category_items?category=4">外设</a></li>
+            <li><a href="/category_items?category=5">出行工具</a></li>
           </ul>
           <form class="navbar-form navbar-left" action="/item/filter">
             <div class="form-group">
@@ -103,7 +110,7 @@
             COPYRIGHT 2018 BY hhudi ALL RIGHTS RESERVED
         </div>
     </div>
-    
+    {% block js %}
     <script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf-8">
@@ -112,6 +119,6 @@
         });
         $('.body_container').css('margin-top',($('.navbar').height()+10)+'px')
     </script>
-    {% block js %}{% endblock js %}
+    {% endblock js %}
 </body>
 </html>

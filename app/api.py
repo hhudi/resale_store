@@ -16,11 +16,14 @@ def init_api(app):
     @app.route('/')
     def index():
         # items = Item.query.filter_by(status=1).order_by(Item.created_time.desc()).all()
-        dig_items = Item.query.filter_by(status=1, category=0).order_by(Item.created_time.desc()).limit(4).all()
+        dig_items = Item.query.filter_by(status=1, category=0).order_by(Item.created_time.desc()).limit(8).all()
         print(dig_items)
-        bk_items = Item.query.filter_by(status=1, category=1).order_by(Item.created_time.desc()).limit(4).all()
-        oth_items = Item.query.filter_by(status=1, category=2).order_by(Item.created_time.desc()).limit(4).all()
-        return render_template('index.html', dig_items=dig_items, bk_items=bk_items, oth_items=oth_items)
+        bk_items = Item.query.filter_by(status=1, category=1).order_by(Item.created_time.desc()).limit(8).all() 
+        oth_items = Item.query.filter_by(status=1, category=2).order_by(Item.created_time.desc()).limit(8).all()
+        cosmetic_items = Item.query.filter_by(status=1, category=3).order_by(Item.created_time.desc()).limit(8).all()
+        peripherals_items = Item.query.filter_by(status=1, category=4).order_by(Item.created_time.desc()).limit(8).all()
+        travel_items = Item.query.filter_by(status=1, category=5).order_by(Item.created_time.desc()).limit(8).all()
+        return render_template('index.html', dig_items=dig_items, bk_items=bk_items, oth_items=oth_items, cosmetic_items=cosmetic_items, peripherals_items=peripherals_items, travel_items=travel_items)
 
     # 商品分类
     @app.route('/category_items')
@@ -38,7 +41,8 @@ def init_api(app):
 
         account = request.form['account']
         password = request.form['password']
-        user = register_user(account, password)
+        telephone = request.form['telephone']
+        user = register_user(account, password, telephone)
         if not user:
             return redirect(url_for('.register'))
         login_user(user)
@@ -133,10 +137,15 @@ def init_api(app):
         address = request.form['address']
         people = request.form['people']
         mobile = request.form['mobile']
+        is_default = request.form['is_default']
+        if is_default == '0':
+            is_default = False
+        else:
+            is_default = True
+        
+        print(address, people, mobile, is_default)
 
-        print(address, people, mobile)
-
-        add = UserAddress(sn=str(uuid4()).replace('-', ''),user_sn=current_user.sn, address=address, people=people, mobile=mobile)
+        add = UserAddress(sn=str(uuid4()).replace('-', ''),user_sn=current_user.sn, address=address, people=people, mobile=mobile, is_default=is_default)
         db.session.add(add)
         db.session.commit()
         return redirect(url_for('.page_address'))
@@ -264,11 +273,12 @@ def init_api(app):
         if item.status != 1:
             return dumps({'code':-1, 'msg':'status is not allowed'})
 
-        default_address = UserAddress.query.filter_by(user_sn=current_user.sn,is_default=True,deleted=False).first()
-        if not default_address:
-            default_address = UserAddress.query.filter_by(user_sn=current_user.sn,deleted=False).order_by(UserAddress.created_time.desc()).first()
+        # default_address = UserAddress.query.filter_by(user_sn=current_user.sn,is_default=True,deleted=False).first()
+        adds = UserAddress.query.filter_by(user_sn=current_user.sn, deleted=False).all()
+        # if not default_address:
+        #     default_address = UserAddress.query.filter_by(user_sn=current_user.sn,deleted=False).order_by(UserAddress.created_time.desc()).first()
 
-        return render_template('order_confirm.html', item=item, address=default_address)
+        return render_template('order_confirm.html', item=item, address=adds)
 
 
 

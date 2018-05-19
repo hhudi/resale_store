@@ -9,6 +9,10 @@
         font-size: 1.8rem;
         border: 1px solid #eee;
 }
+.order_div{
+    cursor: pointer;
+    background: #f9f9f9;
+}
 </style>
 {% endblock css %}
 
@@ -16,8 +20,8 @@
 <div class="order_list">
     {% if orders %}
         {% for order in orders%}
-            <div onclick="location.href='/page/order/{{order.sn}}'">
-                <p>订单状态：{{['未支付','已支付'][order.status]}}</p>
+            <div onclick="location.href='/page/order/{{order.sn}}'" class="order_div">
+                <p>订单状态：<b style="color: red;">{{['未支付','已支付'][order.status]}}</b></p>
                 <p>商品：{{order.item_name}}</p>
                 <p>价格：{{order.item_price}}</p>
 

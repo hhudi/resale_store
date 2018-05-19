@@ -1,8 +1,18 @@
+hr{
+    border-top: 1px solid #aaa !important;
+}
 .main_content{
     width: 90%;
     min-width: 820px;
-    margin: 60px auto 0;
+    margin: 20px auto 0;
     padding-left: 50px;
+    overflow: hidden;
+}
+.text-scroll{
+    width: 300px;
+    margin: 0 auto;
+    color: #45292a;
+    font-size: 36px;
 }
 .main{
     display: flex;
@@ -27,16 +37,24 @@
     min-width: 200px;
     border: 1px solid #ccc;
 }
+.mod_static_img{
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+}
+.mod_static_img img{
+    width: 100%;margin-top: -10px;
+}
 .subtitle{
     cursor: text;
 }
 .category_btn{
     width: 100%;
-    height: 40px;
+    height: 42.5px;
     text-align: left;
-    line-height: 40px;
+    line-height: 42.5px;
     font-size: 18px;
-    padding: 5px 10px;
+    padding: 5px 20px;
     border-bottom: 1px solid #ccc;
     cursor: default;
 }
@@ -52,7 +70,7 @@
 }
 .mod_release_btn{
     width: 100%;
-    height: 120px;
+    height: 130px;
     background: #ccc;
     text-align: center;
 }
@@ -69,14 +87,20 @@
 .category_content{
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 860px;
+    float: left;
 }
-.digital_item, .book_item, .other_item{
+.category_title h3{
+    background: #ccc;
+}
+.digital_item, .book_item, .other_item, .cosmetic_item, .peripherals_item, .travel_item{
+    flex: 1;
     width: 100%;
     margin: 20px 0;
     overflow: hidden;
+    border-bottom: 1px dotted #aaa;
 }
-.dig_item, .bk_item, .oth_item{
+.dig_item, .bk_item, .oth_item, .cos_item, .peri_item, .tra_item{
     list-style: none;
     float: left;
     margin: 0 5px 22px 0px;
@@ -85,6 +109,7 @@
     text-align: center;
     overflow: hidden;
     position: relative;
+    background: #fefefe;
 }
 ul.cate_item_list{
     width: 800px;
@@ -94,6 +119,9 @@ ul.cate_item_list{
     width: 100%;
     overflow: hidden;
     height: calc(100% - 60px);
+}
+.item_pic:hover{
+    transform: scale(1.2);
 }
 .item_main_image, .item_default_image{
     height: 100%;
@@ -110,4 +138,11 @@ ul.cate_item_list{
 }
 .glyphicon-yen{
     color: #999;
+}
+
+.adviss_btn{
+    width: 250px;
+    position: fixed;
+    bottom: 20px;
+    right: 60px;
 }
