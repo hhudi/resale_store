@@ -59,17 +59,10 @@ padding: 5px 10px;
     <h4>商品信息</h4>
     <div class="item_div">
         <div>
-            {% if item.main_image %}
-<<<<<<< HEAD
-            <img src="/var/item_images/{{item.main_image}}">
-            {% else %}
-            <img src="{{ url_for('static', filename='img/store_icon.png') }}" alt="">
-=======
-            
+            {% if item.main_image %}            
             <img src="/var/item_images/{{item.main_image}}">
             {% else %}
             <img src="{{ url_for('static', filename='item_images/{{item.main_image}}') }}">
->>>>>>> 0742158245b09d7f1affbe40ba431a7628f61016
             {% endif %}
             <p><label>商品名称：</label>{{item.name}}</p>
             <p><label>商品分类：</label>{{item.category}}</p>

@@ -27,9 +27,7 @@ $('.cancel_publish_btn').click(function(){
 });
 
 $('.add_image_btn input').change(function(){
-<<<<<<< HEAD
     var item_name = $('#item_name').val();
-    console.log(item_name);
     if(item_name == ''){
         alert("请先录入商品文字信息");
         $('#item_name').focus();
@@ -44,20 +42,6 @@ $('.add_image_btn input').change(function(){
         };
         upload_data(form_data, 0, function(){});
     }
-=======
-    var form_data = get_form_data();
-    console.log(form_data);
-    var files=$(this).prop('files');
-    if (files.length > 0){
-        var file = files[0];
-        for (i = 0; i < files.length; i++) {
-            form_data.append('file_' + i, files[i]);
-        }
-    };
-    console.log(form_data);
-    upload_data(form_data, 0, function(){});
->>>>>>> 0742158245b09d7f1affbe40ba431a7628f61016
-});
 
 function get_form_data(){
     if($('#item_name').val() != null && $('#item_price').val()!=null && $('#item_describe').val()!=null){

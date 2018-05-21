@@ -202,15 +202,8 @@ def init_api(app):
         item_price = int(item_price) if item_price else 0
 
         print(item_sn)
-<<<<<<< HEAD
-        if item_sn:
-            item = Item(user_sn=current_user.sn, name=item_name, price=item_price, category=item_category, describe=item_describe)
-            print(">>>>>>>")
-            print(item)
-=======
         if not item_sn:
             item = Item(sn=str(uuid4()).replace('-', ''),user_sn=current_user.sn, name=item_name, price=item_price, category=item_category, describe=item_describe)
->>>>>>> a2426ad5af5131ea9a062fca4431e5ab93c2e9ea
             db.session.add(item)
             db.session.commit()
             db.session.flush()

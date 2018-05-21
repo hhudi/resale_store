@@ -96,13 +96,6 @@
 
 {% endblock body %}
 {% block js %}
-<<<<<<< HEAD
     {{ super() }}
-    <script type="text/javascript" src="/static/js/edit_item.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/edit_item.js') }}"></script>
 {% endblock js %}
-=======
-        {{ super() }}
-<script type="text/javascript" src="{{ url_for('static', filename='js/edit_item.js') }}"></script>
-{% endblock js %}
-{% endblock body %}
->>>>>>> 0742158245b09d7f1affbe40ba431a7628f61016
