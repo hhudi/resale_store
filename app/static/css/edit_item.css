@@ -21,16 +21,25 @@
     padding: 10px;
     margin: 10px;
 }
+<<<<<<< HEAD
 .item_image_div img{
     height: 100%;
     margin: 0 auto;
 }
+=======
+
+
+
+>>>>>>> 0742158245b09d7f1affbe40ba431a7628f61016
 
 .add_image_btn{
     position: relative;
     overflow: hidden;
 }
 .add_image_btn input{
+    display: inline-block;
+    height: 100%;
+    width: 100%;
     position: absolute;
     top: 0;
     left: 0;

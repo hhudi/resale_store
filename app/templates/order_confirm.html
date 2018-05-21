@@ -60,9 +60,16 @@ padding: 5px 10px;
     <div class="item_div">
         <div>
             {% if item.main_image %}
+<<<<<<< HEAD
             <img src="/var/item_images/{{item.main_image}}">
             {% else %}
             <img src="{{ url_for('static', filename='img/store_icon.png') }}" alt="">
+=======
+            
+            <img src="/var/item_images/{{item.main_image}}">
+            {% else %}
+            <img src="{{ url_for('static', filename='item_images/{{item.main_image}}') }}">
+>>>>>>> 0742158245b09d7f1affbe40ba431a7628f61016
             {% endif %}
             <p><label>商品名称：</label>{{item.name}}</p>
             <p><label>商品分类：</label>{{item.category}}</p>
@@ -109,6 +116,7 @@ padding: 5px 10px;
             dataType: 'json',
             success:function(Data){
                 if (Data.code==0){
+                    alert(1);
                     location.href="/page/order/"+Data.order_sn;
                 }else{
                     alert(Data.msg);

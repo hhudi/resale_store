@@ -10,7 +10,6 @@ class BaseConfig(object):
     ROOT_DIR = os.path.dirname(APP_DIR)
     VAR_DIR = ROOT_DIR + '/var/'
 
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///../test.db'
     HOSTNAME = '127.0.0.1'
     PORT = '3306'
     DATABASE = 'resale_test'
